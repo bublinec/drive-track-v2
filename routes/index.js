@@ -1,18 +1,9 @@
 // Dependencies:
 const express = require("express"),
       router = express.Router({mergeParams: true}),
+      middleware = require("../middleware"),
       Ride = require("../modules/ride");
       
-
-// Functions:
-function isLoggedIn(req, res, next){
-    // if logged in continue to the next function
-    if(req.isAuthenticated()){
-        return next();
-    }
-    // else redirect to login
-    res.redirect("/login");
-}
 
 
 // ROUTES
@@ -36,7 +27,7 @@ router.get("/rides", function(req, res){
 })
 
 
-router.post("/rides", isLoggedIn, function(req, res){
+router.post("/rides", middleware.isLoggedIn, function(req, res){
     Ride.create({
         distance: req.body.distance,
         author: {

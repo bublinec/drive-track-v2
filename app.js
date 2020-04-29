@@ -3,6 +3,7 @@ const express = require("express"),
       mongoose = require("mongoose"),
       passport = require("passport"),
       bodyParser = require("body-parser"),
+      flash = require("connect-flash"),
       localStrategy = require("passport-local");
 
 // Models:
@@ -11,7 +12,10 @@ const Ride = require("./modules/ride"),
 
 // Routes:
 const authRoutes = require("./routes/auth"),
-      indexRoutes = require("./routes/index");
+      indexRoutes = require("./routes/index"),
+      rideRoutes = require("./routes/rides"),
+      vehicleRoutes = require("./routes/vehicles");
+
 
 // DB:
 mongoose.connect("mongodb://heroku_86qt99x8:hq1oqaop1m746569r2u08aojaj@ds123718.mlab.com:23718/heroku_86qt99x8", {useNewUrlParser: true, useUnifiedTopology: true});
@@ -20,6 +24,7 @@ mongoose.connect("mongodb://heroku_86qt99x8:hq1oqaop1m746569r2u08aojaj@ds123718.
 const app = express();
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(flash());
 app.set("view engine", "ejs");
 
 // Passport configuration (order matters)
@@ -39,12 +44,17 @@ passport.deserializeUser(User.deserializeUser());
 app.use(function(req, res, next){
     // whatever is in locals will be passed to the template
     res.locals.current_user = req.user;
-    next();
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
+    next(); // proceed to the next function
 });
 
 // routes
 app.use("/", indexRoutes);
 app.use("/", authRoutes);
+app.use("/vehicles", vehicleRoutes);
+app.use("/rides", rideRoutes);
+
 
 // Start server
 const port = process.env.PORT || 3000; 

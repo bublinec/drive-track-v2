@@ -12,6 +12,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
+
+        <!-- Top nav -->
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <a class="navbar-brand" href="index.html">Drive Track</a><button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -34,8 +36,11 @@
                     </div>
                 </li>
             </ul>
+
         </nav>
+
         <div id="layoutSidenav">
+            <!-- Side nav -->
             <div id="layoutSidenav_nav">
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
@@ -55,7 +60,7 @@
                                 <nav class="sb-sidenav-menu-nested nav">
                                   <a class="nav-link" href="layout-static.html">Static Navigation</a>
                                   <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                                  <a class="nav-link" href="/new"><i class="fas fa-plus"></i></a>
+                                  <a class="nav-link" href="/vehicles/new"><i class="fas fa-plus"></i></a>
                                 </nav>
                             </div>
                             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages"
@@ -97,5 +102,25 @@
                     </div>
                 </nav>
             </div>
+
+            <!-- Content containers -->
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid">
+                        <!-- Flash message -->
+                        
+                        <div class="container mt-4">
+                            <!-- error is an empty arr by default which is true -->
+                            <% if(error && error.length > 0){ %>
+                                <div class="alert alert-danger" role="alert">
+                                    <%= error %> 
+                                </div>
+                            <% } %>
+                            <% if(success && success.length > 0){ %> 
+                                <div class="alert alert-success" role="alert">
+                                    <%= success %> 
+                                </div>
+                            <% } %> 
+                        </div>
 
     
