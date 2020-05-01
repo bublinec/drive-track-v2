@@ -4,20 +4,20 @@
     <h1 class="mt-4">Add new vehicle</h1>
 
     <div class="col-md-9">
-        <form action="/register" method="post">
+        <form action="/vehicles" method="post">
 
             <div class="form-row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="small mb-1" for="vehicle[brand]">Brand</label>
-                        <input class="form-control py-4" type="text" name="brand" placeholder="Ford" required/>
+                        <label class="small mb-1">Brand</label>
+                        <input class="form-control py-4" type="text" name="vehicle[brand]" placeholder="Ford" required/>
                     </div>
                 </div>
     
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="small mb-1" for="vehicle[model]">Model</label>
-                        <input class="form-control py-4" type="text" placeholder="Mondeo" required/></div>
+                        <label class="small mb-1">Model</label>
+                        <input class="form-control py-4" name="vehicle[model]" type="text" placeholder="Mondeo" required/></div>
                 </div>
             </div>
     

@@ -4,7 +4,14 @@ const mongoose = require("mongoose"),
 var userSchema = new mongoose.Schema({
     username: String,
     email: String,
-    passport: String
+    passport: String,
+    vehicles: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Vehicle"
+        }
+    ]
+
 });
 
 userSchema.plugin(passportLocalMongoose);

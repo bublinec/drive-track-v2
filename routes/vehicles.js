@@ -12,27 +12,28 @@ router.get("/new", middleware.isLoggedIn, function(req, res){
     res.render("new.ejs");
 });
 
-// create
-// router.post("/", middleware.isLoggedIn, function(req, res){ 
-//     // create pond and save it to db
-//     pond = req.body.pond;
-//     pond.author = {
-//         id: req.user._id,
-//         username: req.user.username
-//     } 
-//     Pond.create(req.body.pond, function(err, created_pond){
-//         if(err){
-//             req.flash("error", err.message);
-//             res.redirect("back");
-//         }
-//         else{
-//             console.log("\nCreated pond:\n", created_pond);
-//             // redirect to ponds page with a success flash message
-//             req.flash("success", "Pond created!");
-//             res.redirect("/ponds");
-//         }
-//     });
-// });
+router.post("/", middleware.isLoggedIn, function(req, res){ 
+    // create pond and save it to db
+    vehicle = req.body.vehicle;
+    vehicle.author = {
+        id: req.user._id,
+        username: req.user.username
+    }
+    console.log(vehicle);
+    
+    Vehicle.create(vehicle, function(err, vehicle){
+        if(err){
+            req.flash("error", err.message);
+            res.redirect("back");
+        }
+        else{
+            console.log("\nCreated vehicle:\n", vehicle);
+            // redirect to ponds page with a success flash message
+            req.flash("success", vehicle.brand + " " + vehicle.model + " has been added to your account!");
+            res.redirect("/dashboard");
+        }
+    });
+});
 
 // // show
 // router.get("/:id", function(req, res){
