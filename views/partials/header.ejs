@@ -7,8 +7,11 @@
         <meta name="description" content="App to keep records on driving." />
         <meta name="author" content="Juraj Bublinec" />
         <title>Drive Track</title>
-        <link href="css/styles.css" rel="stylesheet" />
+        <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+        <link href="/css/styles.css" rel="stylesheet" />
+        <link href="/css/my.css" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
@@ -21,7 +24,7 @@
                 <div class="input-group">
                     <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
                     <div class="input-group-append">
-                        <button class="btn btn-danger" type="button"><i class="fas fa-search"></i></button>
+                        <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
             </form>
@@ -57,8 +60,8 @@
                             ></a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                  <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                  <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                                  <!-- <a class="nav-link" href="layout-static.html">Static Navigation</a> -->
+                                  <!-- <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a> -->
                                   <a class="nav-link" href="/vehicles/new"><i class="fas fa-plus"></i></a>
                                 </nav>
                             </div>
@@ -96,8 +99,7 @@
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        <%= //current_user.username %> 
+                        <div class="small">Logged in as: <%= current_user.username %> </div>
                     </div>
                 </nav>
             </div>

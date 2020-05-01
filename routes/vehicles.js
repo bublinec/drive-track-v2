@@ -9,7 +9,7 @@ const express = require("express"),
 
 // new
 router.get("/new", middleware.isLoggedIn, function(req, res){
-    res.render("landing.ejs");
+    res.render("new.ejs");
 });
 
 // create
