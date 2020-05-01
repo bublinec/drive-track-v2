@@ -12,11 +12,13 @@ router.get("/register", function(req, res){
 
 // register logic
 router.post("/register", function(req, res){
-    newUser = new User({username: req.body.username});
+    // TO DO : PASSWORD CONFIRMATION
+    newUser = {email: req.body.email, username: req.body.username}
+    console.log(newUser);
     User.register(newUser, req.body.password, function(err, created_user){
         if(err){
-            console.log(err);
-            return res.render("/register");
+            req.flash("error", err.message);
+            res.redirect("back");
         }
         // if successfully create a user, then login and redirect
         passport.authenticate("local")(req, res, function(){
@@ -30,8 +32,9 @@ router.get("/login", function(req, res){
     res.render("login");
 });
 
-// login lgic
+// login logic
 router.post("/login", passport.authenticate("local", {
+    // TO DO : FIGURE OUT THE FLASH MESSAGES
     successRedirect: "rides",
     failureRedirect: "login"
 }));
@@ -39,7 +42,7 @@ router.post("/login", passport.authenticate("local", {
 // log out
 router.get("/logout", function(req, res){
     req.logout();
-    res.redirect("/rides");
+    res.redirect("/login");
 });
 
 

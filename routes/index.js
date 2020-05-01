@@ -11,14 +11,15 @@ router.get("/", function(req, res){
     res.redirect("/rides");
 })
 
-router.get("/dashboard", function(req, res){
+router.get("/dashboard", middleware.isLoggedIn, function(req, res){
     res.render("dashboard")
 })
 
-router.get("/rides", function(req, res){
+router.get("/rides", middleware.isLoggedIn, function(req, res){
     Ride.find({}, function(err, all_rides){
         if(err){
-            console.log(err);
+            req.flash("error", err.message);
+            res.redirect("back");
         }
         else{
             res.render("rides", {rides: all_rides});
@@ -36,7 +37,8 @@ router.post("/rides", middleware.isLoggedIn, function(req, res){
         }
     }, function(err, created_ride){
         if(err){
-            console.log(err);
+            req.flash("error", err.message);
+            res.redirect("back");
         }
         else{
             res.redirect("/rides");
@@ -45,7 +47,7 @@ router.post("/rides", middleware.isLoggedIn, function(req, res){
 });
 
 
-router.get("/drivers", function(req, res){
+router.get("/drivers", middleware.isLoggedIn, function(req, res){
     res.render("drivers")
 })
 

@@ -18,7 +18,11 @@ const authRoutes = require("./routes/auth"),
 
 
 // DB:
-mongoose.connect("mongodb://heroku_86qt99x8:hq1oqaop1m746569r2u08aojaj@ds123718.mlab.com:23718/heroku_86qt99x8", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb://localhost/drive-track", {
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    useCreateIndex: true
+});
 
 // App configuration
 const app = express();
@@ -50,10 +54,10 @@ app.use(function(req, res, next){
 });
 
 // routes
-app.use("/", indexRoutes);
-app.use("/", authRoutes);
 app.use("/vehicles", vehicleRoutes);
 app.use("/rides", rideRoutes);
+app.use("/", indexRoutes);
+app.use("/", authRoutes);
 
 
 // Start server
