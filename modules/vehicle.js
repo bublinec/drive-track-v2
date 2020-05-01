@@ -9,6 +9,12 @@ var vehicleSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         }
+    ],
+    rides: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Ride"
+        }
     ]
 });
 

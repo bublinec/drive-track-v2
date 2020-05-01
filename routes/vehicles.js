@@ -19,17 +19,18 @@ router.post("/", middleware.isLoggedIn, function(req, res){
         id: req.user._id,
         username: req.user.username
     }
-    console.log(vehicle);
     
-    Vehicle.create(vehicle, function(err, vehicle){
+    Vehicle.create(vehicle, function(err, created_vehicle){
         if(err){
             req.flash("error", err.message);
             res.redirect("back");
         }
         else{
-            console.log("\nCreated vehicle:\n", vehicle);
+            req.user.vehicles.push(created_vehicle);
+            req.user.save();
+            console.log("\nCreated vehicle:\n", created_vehicle);
             // redirect to ponds page with a success flash message
-            req.flash("success", vehicle.brand + " " + vehicle.model + " has been added to your account!");
+            req.flash("success", created_vehicle.brand + " " + created_vehicle.model + " has been added to your account!");
             res.redirect("/dashboard");
         }
     });

@@ -47,10 +47,18 @@ passport.deserializeUser(User.deserializeUser());
 // pass current_user to each template (using middleware function)
 app.use(function(req, res, next){
     // whatever is in locals will be passed to the template
-    res.locals.current_user = req.user;
+    // flash messages
     res.locals.error = req.flash("error");
     res.locals.success = req.flash("success");
-    next(); // proceed to the next function
+    if(req.user){
+        // find user, populate and pass it to all templates
+        // (exec is a User schema function)
+        User.findById(req.user._id).populate("vehicles").exec(function(err, populated_user){
+            res.locals.current_user = populated_user;
+            next(); // proceed to the next function
+        });
+    };
+
 });
 
 // routes
@@ -61,7 +69,7 @@ app.use("/", authRoutes);
 
 
 // Start server
-const port = process.env.PORT || 3000; 
+const port = process.env.PORT || 8000; 
 app.listen(port, function(err){
     if(err){
         console.log(err);     
