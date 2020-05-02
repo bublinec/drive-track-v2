@@ -7,49 +7,46 @@ const express = require("express"),
 
 
 // ROUTES
-router.get("/", function(req, res){
-    res.redirect("/rides");
-})
-
-router.get("/dashboard", middleware.isLoggedIn, function(req, res){
-    res.render("dashboard")
-})
-
-router.get("/rides", middleware.isLoggedIn, function(req, res){
-    Ride.find({}, function(err, all_rides){
-        if(err){
-            req.flash("error", err.message);
-            res.redirect("back");
-        }
-        else{
-            res.render("rides", {rides: all_rides});
-        }
-    });
+router.get("/", middleware.isLoggedIn, function(req, res){
+    res.redirect("/vehicles");
 })
 
 
-router.post("/rides", middleware.isLoggedIn, function(req, res){
-    Ride.create({
-        distance: req.body.distance,
-        author: {
-            id: req.user._id,
-            username: req.user.username
-        }
-    }, function(err, created_ride){
-        if(err){
-            req.flash("error", err.message);
-            res.redirect("back");
-        }
-        else{
-            res.redirect("/rides");
-        }
-    });
-});
+// router.get("/rides", middleware.isLoggedIn, function(req, res){
+//     Ride.find({}, function(err, all_rides){
+//         if(err){
+//             req.flash("error", err.message);
+//             res.redirect("back");
+//         }
+//         else{
+//             res.render("rides", {rides: all_rides});
+//         }
+//     });
+// })
 
 
-router.get("/drivers", middleware.isLoggedIn, function(req, res){
-    res.render("drivers")
-})
+// router.post("/rides", middleware.isLoggedIn, function(req, res){
+//     Ride.create({
+//         distance: req.body.distance,
+//         author: {
+//             id: req.user._id,
+//             username: req.user.username
+//         }
+//     }, function(err, created_ride){
+//         if(err){
+//             req.flash("error", err.message);
+//             res.redirect("back");
+//         }
+//         else{
+//             res.redirect("/rides");
+//         }
+//     });
+// });
+
+
+// router.get("/drivers", middleware.isLoggedIn, function(req, res){
+//     res.render("drivers")
+// })
 
 
 
