@@ -67,7 +67,7 @@ app.use(function(req, res, next){
 
 // routes
 app.use("/vehicles", vehicleRoutes);
-app.use("/rides", rideRoutes);
+app.use("/vehicles/:id/rides", rideRoutes);
 app.use("/", indexRoutes);
 app.use("/", authRoutes);
 

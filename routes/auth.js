@@ -14,7 +14,6 @@ router.get("/register", function(req, res){
 router.post("/register", function(req, res){
     // TO DO : PASSWORD CONFIRMATION
     newUser = {email: req.body.email, username: req.body.username}
-    console.log(newUser);
     User.register(newUser, req.body.password, function(err, created_user){
         if(err){
             req.flash("error", err.message);
@@ -22,7 +21,7 @@ router.post("/register", function(req, res){
         }
         // if successfully create a user, then login and redirect
         passport.authenticate("local")(req, res, function(){
-            res.redirect("vehicles/show");
+            res.redirect("/vehicles");
         });
     });
 });
