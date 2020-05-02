@@ -5,13 +5,18 @@ const express = require("express"),
       Vehicle = require("../modules/vehicle"),
       middleware = require("../middleware");
 
-// index - all cars are displayed on the side nav
+// index - all cars are displayed ALSO on the side nav
+// index = dashboard
+router.get("/", middleware.isLoggedIn, function(req, res){
+    res.render("vehicles/index");
+})
 
 // new
 router.get("/new", middleware.isLoggedIn, function(req, res){
-    res.render("new.ejs");
+    res.render("vehicles/new.ejs");
 });
 
+// create
 router.post("/", middleware.isLoggedIn, function(req, res){ 
     // create pond and save it to db
     vehicle = req.body.vehicle;
@@ -31,25 +36,25 @@ router.post("/", middleware.isLoggedIn, function(req, res){
             console.log("\nCreated vehicle:\n", created_vehicle);
             // redirect to ponds page with a success flash message
             req.flash("success", created_vehicle.brand + " " + created_vehicle.model + " has been added to your account!");
-            res.redirect("/dashboard");
+            res.redirect("/");
         }
     });
 });
 
-// // show
-// router.get("/:id", function(req, res){
-//     // find the pond with provided id
-//     Pond.findById(req.params.id).populate("comments").exec(function(err, found_pond){
-//         if(err){
-//             req.flash("error", err.message);
-//             res.redirect("back");
-//         }
-//         else{        
-//             // render the show page for that id
-//             res.render("ponds/show", {pond: found_pond});
-//         }
-//     });
-// });
+// show
+router.get("/:id", middleware.isLoggedIn, function(req, res){
+    // find the pond with provided id
+    Vehicle.findById(req.params.id).populate("rides").exec(function(err, found_vehicle){
+        if(err){
+            req.flash("error", err.message);
+            res.redirect("back");
+        }
+        else{        
+            // render the show page for that id
+            res.render("vehicles/show", {vehicle: found_vehicle});
+        }
+    });
+});
 
 // // edit (form)
 // router.get("/:id/edit", middleware.isLoggedIn, middleware.isAuthorized, function(req, res){

@@ -1,3 +1,25 @@
 body{
     font-family: 'Ubuntu', sans-serif;
 }
+
+/* Add rides toggler */
+#add_ride_button, #show_tools_button{
+    font-size: x-large;
+    width: 60px;
+}
+
+.card-header{
+    padding: 0.3rem 0.7rem;
+}
+
+#add_ride_form{
+    display: none;
+}
+
+#dataTable_wrapper .row:first-child{
+    display: none;
+}
+
+.show{
+    display: flex !important;
+}

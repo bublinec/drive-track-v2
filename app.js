@@ -26,10 +26,10 @@ mongoose.connect("mongodb://localhost/drive-track", {
 
 // App configuration
 const app = express();
+app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(flash());
-app.set("view engine", "ejs");
 
 // Passport configuration (order matters)
 app.use(require("express-session")({
@@ -50,15 +50,19 @@ app.use(function(req, res, next){
     // flash messages
     res.locals.error = req.flash("error");
     res.locals.success = req.flash("success");
+    
     if(req.user){
         // find user, populate and pass it to all templates
         // (exec is a User schema function)
         User.findById(req.user._id).populate("vehicles").exec(function(err, populated_user){
             res.locals.current_user = populated_user;
             next(); // proceed to the next function
-        });
-    };
 
+        });
+    }
+    else{
+        next(); // proceed to the next function
+    }    
 });
 
 // routes
@@ -69,7 +73,7 @@ app.use("/", authRoutes);
 
 
 // Start server
-const port = process.env.PORT || 8000; 
+const port = process.env.PORT || 3000; 
 app.listen(port, function(err){
     if(err){
         console.log(err);     

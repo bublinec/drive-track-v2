@@ -22,7 +22,7 @@ router.post("/register", function(req, res){
         }
         // if successfully create a user, then login and redirect
         passport.authenticate("local")(req, res, function(){
-            res.redirect("/rides");
+            res.redirect("vehicles/show");
         });
     });
 });
@@ -35,8 +35,8 @@ router.get("/login", function(req, res){
 // login logic
 router.post("/login", passport.authenticate("local", {
     // TO DO : FIGURE OUT THE FLASH MESSAGES
-    successRedirect: "rides",
-    failureRedirect: "login"
+    successRedirect: "/vehicles",
+    failureRedirect: "/login"
 }));
 
 // log out

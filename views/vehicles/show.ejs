@@ -1,11 +1,40 @@
-<%- include("partials/header") %> 
+<%- include("../partials/header") %> 
 
-<h1 class="mt-4">Mondeo</h1>
+<h1 class="mt-4"><%= vehicle.brand %> <%= vehicle.model %> </h1>
 
 
-<div class="card mb-4">
-    <div class="card-header"><i class="fas fa-table mr-1"></i>DataTable Example</div>
+<div class="card mb-4 mt-4">
+    <div class="card-header">
+        <i class="fas fa-table mr-1"></i>
+        Driving Record
+        <span id="add_ride_button"><i class="fas fa-plus mt-2 mr-1 float-right" title="Add new ride"></i></span>
+        <span id="show_tools_button"><i class="fas fa-search mt-2 mr-3 float-right" title="Tools"></i></span> 
+    </div>
+    
     <div class="card-body">
+        <form id="add_ride_form" action="/vehicles/rides/" method="post">
+            <div class="form-row mb-3">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input class="form-control py-2" type="text" name="ride[destination]" placeholder="Where to?" required/>
+                    </div>
+                </div>
+    
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input class="form-control py-2" name="ride[distance]" type="text" placeholder="How many km?" required/></div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input class="form-control py-2" name="ride[driver]" type="text" placeholder="Who is driving?" required/></div>
+                </div>
+                <div class="col-md-2 form-group mt-0 mb-0">
+                    <button class="btn btn-primary btn-block">Submit</button>
+                </div>
+             </div>
+        </form>
+
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
@@ -491,4 +520,4 @@
     </div>
 </div>
          
-<%- include("partials/footer") %> 
+<%- include("../partials/footer") %> 
