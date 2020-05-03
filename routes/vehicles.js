@@ -1,6 +1,7 @@
 // Dependencies:
 const express = require("express"),
       router = express.Router({mergeParams: true}),
+      mongoose = require("mongoose"),
       Ride = require("../modules/ride"),
       Vehicle = require("../modules/vehicle"),
       middleware = require("../middleware");
@@ -87,31 +88,33 @@ router.get("/:id", middleware.isLoggedIn, function(req, res){
 //     });
 // });
 
-// // destroy
-// router.delete("/:id", middleware.isLoggedIn, middleware.isAuthorized, function(req, res){
-//     Pond.findById(req.params.id, function(err, foundPond){
-//         if(err){
-//             req.flash("error", err.message);
-//             res.redirect("back");
-//         }
-//         else{
-//             // remove all comments 
-//             foundPond.comments.forEach(function(comment){
-//                 Comment.findByIdAndRemove(comment, function(err, removedComment){
-//                     if(err){
-//                                     req.flash("error", err.message);
-//                         res.redirect("back");
-//                     }
-//                 });
-//             });
-//             // remove the pond itself
-//             foundPond.remove();
-//             // redirect to index with a succes flash message
-//             req.flash("success", "Pond delted!");
-//             res.redirect("/ponds");
-//         }
-//     })
-// })
-
+// destroy
+router.delete("/:id", middleware.isLoggedIn, function(req, res){
+    // remove reference from user object
+    req.user.vehicles.remove(mongoose.Types.ObjectId(req.params.id));
+    req.user.save();
+    // remove all rides associted with the vehicle
+    Vehicle.findById(req.params.id, function(err, found_vehicle){
+        if(err){
+            req.flash("error", err.message);
+            res.redirect("back");
+        }
+        else{
+            found_vehicle.rides.forEach(function(ride){
+                Ride.findByIdAndRemove(ride, function(err){
+                    if(err){
+                        req.flash("error", err.message);
+                        res.redirect("back");
+                    }
+                });
+            });
+            // remove the vehicle itself
+            found_vehicle.remove();
+            // redirect to index with a succes flash message
+            req.flash("success", "Vehicle deleted!");
+            res.redirect("/vehicles");
+        }
+    });
+});
 
 module.exports = router;

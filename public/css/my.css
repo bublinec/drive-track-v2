@@ -24,7 +24,7 @@ body{
     display: flex !important;
 }
 
-/* Del button */
+/* Del ride */
 .del{
     height: 48px;
     margin: -2.2rem 0;
@@ -47,4 +47,9 @@ tr:hover .del{
     width: 48px;
     opacity: 1;
 
-}   
+}
+
+/* Delete vehicle */
+.inline{
+    display: inline;
+}

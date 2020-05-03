@@ -67,5 +67,30 @@
         </div>
     </div>
 </div>
+
+<!-- Delete button - trigger modal (pop up) dialog -->
+<button id="delete_vehicle_btn" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#myModal">Delete</button>
+
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+      <div class="modal-body">
+        <p>Do you really want to delte <strong><%= vehicle.brand %> <%= vehicle.model %></strong>?</p>
+      </div>
+      <div class="modal-footer">
+        <form class="inline" action="/vehicles/<%= vehicle._id %>?_method=DELETE" method="post">
+            <button class="btn btn-xs btn-danger">Yes</button>
+        </form>
+        <button type="button" class="btn btn-xs btn-primary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
          
 <%- include("../partials/footer") %> 

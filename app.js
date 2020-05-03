@@ -5,6 +5,7 @@ const express = require("express"),
       bodyParser = require("body-parser"),
       flash = require("connect-flash"),
       localStrategy = require("passport-local");
+      methodOverride = require("method-override");
 
 // Models:
 const Ride = require("./modules/ride"),
@@ -29,6 +30,7 @@ const app = express();
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(methodOverride("_method"));
 app.use(flash());
 
 // Passport configuration (order matters)

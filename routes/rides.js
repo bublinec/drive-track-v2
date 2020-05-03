@@ -42,7 +42,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 });
 
 // destroy
-router.post("/:ride_id", middleware.isLoggedIn, function(req, res){
+router.delete("/:ride_id", middleware.isLoggedIn, function(req, res){
     // remove references from vehicle
     Vehicle.findById(req.params.id, function(err, found_vehicle){
         if(err){
