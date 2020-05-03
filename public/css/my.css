@@ -23,3 +23,28 @@ body{
 .show{
     display: flex !important;
 }
+
+/* Del button */
+.del{
+    height: 48px;
+    margin: -2.2rem 0;
+    border: none;
+    text-align: center;
+    font-size: 1.6rem;
+    line-height: 3rem;
+    transition: 0.2s linear;
+    display: inline-block;
+    color: #f1faee;
+    background-color: #E63946;
+    position: absolute;
+    right: 0;
+    /* to hide at before hover */
+    width: 0px;
+    opacity: 0;
+}
+
+tr:hover .del{
+    width: 48px;
+    opacity: 1;
+
+}   

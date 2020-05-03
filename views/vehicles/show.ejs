@@ -55,7 +55,11 @@
                         </td>
                         <td><%= ride.destination %> </td>
                         <td><%= ride.distance %> </td>
-                        <td><%= ride.driver %> </td>
+                        <td><%= ride.driver %>
+                            <form class=".del" action="/vehicles/<%= vehicle._id %>/rides/<%= ride._id %>?_method=DELETE" method="post">
+                                <button class="del"><i class="fas fa-trash-alt"></i></button>
+                            </form>
+                        </td>
                     </tr>
                     <% }); %> 
                 </tbody>

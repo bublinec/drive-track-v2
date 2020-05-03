@@ -27,4 +27,3 @@ $("#add_ride_button").click(function(){
 $("#show_tools_button").click(function(){
     $("#dataTable_wrapper .row:first-child").toggleClass("show");
 });
-
