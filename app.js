@@ -2,9 +2,9 @@
 const express = require("express"),
       mongoose = require("mongoose"),
       passport = require("passport"),
-      bodyParser = require("body-parser"),
       flash = require("connect-flash"),
-      localStrategy = require("passport-local");
+      bodyParser = require("body-parser"),
+      localStrategy = require("passport-local"),
       methodOverride = require("method-override");
 
 // Models:
@@ -13,8 +13,8 @@ const Ride = require("./modules/ride"),
 
 // Routes:
 const authRoutes = require("./routes/auth"),
-      indexRoutes = require("./routes/index"),
       rideRoutes = require("./routes/rides"),
+      indexRoutes = require("./routes/index"),
       vehicleRoutes = require("./routes/vehicles");
 
 
@@ -32,21 +32,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.use(flash());
-
-// Passport configuration (order matters)
-app.use(require("express-session")({
-    secret: "This is a secret string used for hashing.",
-    resave: false,
-    saveUninitialized: false
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new localStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
-// pass current_user to each template (using middleware function)
+// pass variables to each template
 app.use(function(req, res, next){
     // whatever is in locals will be passed to the template
     // flash messages
@@ -67,12 +53,25 @@ app.use(function(req, res, next){
     }    
 });
 
-// routes
+// Passport configuration (order matters)
+app.use(require("express-session")({
+    secret: "This is a secret string used for hashing.",
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+// Routes
 app.use("/vehicles", vehicleRoutes);
 app.use("/vehicles/:id/rides", rideRoutes);
 app.use("/", indexRoutes);
 app.use("/", authRoutes);
-
 
 // Start server
 const port = process.env.PORT || 3000; 
