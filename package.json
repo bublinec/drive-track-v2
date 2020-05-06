@@ -1,5 +1,5 @@
 {
-  "name": "drive-tracker",
+  "name": "drive-track",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bublinec/drive-tracker.git"
+    "url": "git+https://github.com/bublinec/drive-track-v2.git"
   },
   "author": "Juraj Bublinec",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bublinec/drive-tracker/issues"
+    "url": "https://drive-track.fun"
   },
-  "homepage": "https://github.com/bublinec/drive-tracker#readme",
+  "homepage": "https://drive-track.fun",
   "dependencies": {
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",

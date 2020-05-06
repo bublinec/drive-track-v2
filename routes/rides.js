@@ -11,12 +11,23 @@ const express = require("express"),
 
 // create
 router.post("/", middleware.isLoggedIn, function(req, res){
-    new_ride = req.body.ride;
-    new_ride.author = {
-        id: req.user._id,
-        username: req.user.username
+    var new_ride = req.body.ride;
+    // get date from string in the input
+    var input_arr = req.body.date_input.split(".");
+    date_str= input_arr[1] + "/" + input_arr[0] + "/" + input_arr[2];
+    new_ride.date = new Date(date_str);
+    // get round trip checkbox
+    if(req.body.round_trip == "on"){
+        new_ride.round_trip = true;
     }
-    new_ride.time = new Date();
+    else{
+        new_ride.round_trip = false;
+    }
+    // get author
+    // new_ride.author = {
+    //     id: req.user._id,
+    //     username: req.user.username
+    // }
     // lookup the vehicle from request
     Vehicle.findById(req.params.id, function(err, found_vehicle){
         if(err){
@@ -31,8 +42,6 @@ router.post("/", middleware.isLoggedIn, function(req, res){
             else{
                 found_vehicle.rides.push(created_ride);
                 found_vehicle.save();
-                console.log(created_ride.time);
-                
                 // redirect to show route
                 res.redirect("/vehicles/" + req.params.id);
             }

@@ -12,10 +12,10 @@ router.get("/", middleware.isLoggedIn, function(req, res){
     res.render("vehicles/index");
 })
 
-// new
-router.get("/new", middleware.isLoggedIn, function(req, res){
-    res.render("vehicles/new.ejs");
-});
+// new - form is displayed using modal
+// router.get("/new", middleware.isLoggedIn, function(req, res){
+//     res.render("vehicles/new.ejs");
+// });
 
 // create
 router.post("/", middleware.isLoggedIn, function(req, res){ 
@@ -28,7 +28,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     
     Vehicle.create(vehicle, function(err, created_vehicle){
         if(err){
-            req.flash("error", err.message);
+            req.flash("error", err.message); 
             res.redirect("back");
         }
         else{
@@ -57,36 +57,23 @@ router.get("/:id", middleware.isLoggedIn, function(req, res){
     });
 });
 
-// // edit (form)
-// router.get("/:id/edit", middleware.isLoggedIn, middleware.isAuthorized, function(req, res){
-//     Pond.findById(req.params.id, function(err, foundPond){
-//         if(err){
-//             req.flash("error", err.message);
-//             res.redirect("back");
-//         }
-//         else{
-//             res.render("ponds/edit", {pond: foundPond});
-//         }
-//     });
-// });
+// edit - form is displayed using modal
 
-// // update (where form submits to)
-// router.put("/:id", middleware.isLoggedIn, middleware.isAuthorized, function(req, res){
-//     // find and update the pond
-//     Pond.findByIdAndUpdate(req.params.id, req.body.pond, function(err, updatedPond){
-//         if(err){
-//             req.flash("error", err.message);
-//             res.redirect("back");
-//         }
-//         // redirect to show
-//         else{
-//             console.log("here");
-//             // redirect with a succes flash message
-//             req.flash("success", "Pond updated!");
-//             res.redirect(req.params.id);
-//         }
-//     });
-// });
+// update (where form submits to)
+router.put("/:id", middleware.isLoggedIn, function(req, res){
+    // find and update the vehicle
+    Vehicle.findByIdAndUpdate(req.params.id, req.body.vehicle, function(err){
+        if(err){
+            req.flash("error", err.message);
+            res.redirect("back");
+        }
+        else{
+            // redirect with a succes flash message
+            req.flash("success", "Vehicle updated!");
+            res.redirect(req.params.id);
+        }
+    });
+});
 
 // destroy
 router.delete("/:id", middleware.isLoggedIn, function(req, res){
@@ -112,7 +99,7 @@ router.delete("/:id", middleware.isLoggedIn, function(req, res){
             found_vehicle.remove();
             // redirect to index with a succes flash message
             req.flash("success", "Vehicle deleted!");
-            res.redirect("/vehicles");
+            res.redirect("/");
         }
     });
 });

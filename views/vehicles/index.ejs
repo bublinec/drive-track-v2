@@ -1,5 +1,7 @@
 <%- include("../partials/header") %> 
 
+
+
 <h1 class="mt-4">Dashboard</h1>
 
 <div class="row">
@@ -16,5 +18,97 @@
         </div>
     </div>
 </div>
+
+<!-- <script src="/assets/demo/chart-bar-demo.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+
+<!-- Bar chart -->
+<script>
+    // get the current_user
+    var user = <%- JSON.stringify(current_user) %>
+    
+    function get_rides(user){
+        // return arr of all rides (most recent first)
+        var rides = []
+        user.vehicles.forEach(function(vehicle){
+            vehicle.rides.forEach(function(ride){
+                rides.push(ride)
+            });
+        });
+        return rides.reverse();
+    };
+    
+
+    function get_last_months(rides, n_months=6){
+        // return object with month:km driven for the last n_months
+        drive_by_months = {}
+        rides.forEach(function(ride){
+            var month = new Intl.DateTimeFormat('eu', { month: "long"}).format(new Date(ride.time))
+            drive_by_months[month] = 0;
+    
+            if(Object.keys(drive_by_months).length == 7){
+                return drive_by_months;
+            }
+        })
+        return drive_by_months;
+
+    }
+
+    var rides = get_rides(user);
+    var drive_by_months = get_last_months(rides);
+    console.log(drive_by_months);
+    
+
+
+
+    // Set new default font family and font color to mimic Bootstrap's default styling
+    Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    Chart.defaults.global.defaultFontColor = '#292b2c';
+
+    // Bar Chart Example
+    var ctx = document.getElementById("myBarChart");
+    var myLineChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["January", "February", "March", "April", "May", "June"],
+        datasets: [{
+        label: "Revenue",
+        backgroundColor: "rgba(2,117,216,1)",
+        borderColor: "rgba(2,117,216,1)",
+        data: [6000, 5312, 6251, 7841, 9821, 14984],
+        }],
+    },
+    options: {
+        scales: {
+        xAxes: [{
+            time: {
+            unit: 'month'
+            },
+            gridLines: {
+            display: false
+            },
+            ticks: {
+            maxTicksLimit: 6
+            }
+        }],
+        yAxes: [{
+            ticks: {
+            min: 0,
+            max: 15000,
+            maxTicksLimit: 5
+            },
+            gridLines: {
+            display: true
+            }
+        }],
+        },
+        legend: {
+        display: false
+        }
+    }
+    });
+</script>
+<script src="/assets/demo/chart-area-demo.js"></script>
+
 
 <%- include("../partials/footer") %> 

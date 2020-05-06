@@ -9,11 +9,11 @@ body{
 }
 
 .card-header{
-    padding: 0.3rem 0.7rem;
+    padding: 0rem 0.7rem;
 }
 
 #add_ride_form{
-    display: none;
+    /* display: none; */
 }
 
 #dataTable_wrapper .row:first-child{
@@ -23,6 +23,12 @@ body{
 .show{
     display: flex !important;
 }
+
+#add_ride_form label{
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}
+
 
 /* Del ride */
 .del{
@@ -35,7 +41,7 @@ body{
     transition: 0.2s linear;
     display: inline-block;
     color: #f1faee;
-    background-color: #E63946;
+    background-color: #dc3545;
     position: absolute;
     right: 0;
     /* to hide at before hover */

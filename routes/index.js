@@ -7,8 +7,13 @@ const express = require("express"),
 
 
 // ROUTES
-router.get("/", middleware.isLoggedIn, function(req, res){
-    res.redirect("/vehicles");
+router.get("/", function(req, res){
+    if(req.isAuthenticated()){
+        res.redirect("/vehicles");
+    }
+    else{
+        res.redirect("/login");
+    }
 })
 
 

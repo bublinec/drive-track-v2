@@ -32,26 +32,6 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 app.use(flash());
-// pass variables to each template
-app.use(function(req, res, next){
-    // whatever is in locals will be passed to the template
-    // flash messages
-    res.locals.error = req.flash("error");
-    res.locals.success = req.flash("success");
-    
-    if(req.user){
-        // find user, populate and pass it to all templates
-        // (exec is a User schema function)
-        User.findById(req.user._id).populate("vehicles").exec(function(err, populated_user){
-            res.locals.current_user = populated_user;
-            next(); // proceed to the next function
-
-        });
-    }
-    else{
-        next(); // proceed to the next function
-    }    
-});
 
 // Passport configuration (order matters)
 app.use(require("express-session")({
@@ -66,6 +46,31 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Pass variables to each template (flash requires sessions)
+app.use(function(req, res, next){
+    // whatever is in locals will be passed to the template
+    // flash messages
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
+    
+    if(req.user){
+        // find user, populate and pass it to all templates
+        // (exec is a User schema function)
+        User.findById(req.user._id).populate({
+            path: "vehicles",
+            populate: {
+                path: "rides"
+            }
+        }).exec(function(err, populated_user){
+            res.locals.current_user = populated_user;
+            next(); // proceed to the next function
+
+        });
+    }
+    else{
+        next(); // proceed to the next function
+    }    
+});
 
 // Routes
 app.use("/vehicles", vehicleRoutes);
