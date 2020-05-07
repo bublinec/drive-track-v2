@@ -12,7 +12,16 @@ router.get("/register", function(req, res){
 
 // register logic
 router.post("/register", function(req, res){
-    // TO DO : PASSWORD CONFIRMATION
+    // check password confirmation
+    if(req.body.password != req.body.confirm_password){
+        req.flash("error", "Passwords do not match");
+        res.redirect("back");
+    }
+    // check password length
+    if(req.body.password.length < 6){
+        req.flash("error", "Password needs to be at least 6 characters long");
+        res.redirect("back");
+    }
     newUser = {email: req.body.email, username: req.body.username}
     User.register(newUser, req.body.password, function(err, created_user){
         if(err){
