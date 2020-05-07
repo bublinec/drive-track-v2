@@ -102,7 +102,8 @@
 
                         <td data-sort="<%= sort_date %>">
                             <%= ride.date.getDate() %>.
-                            <%= ride.date.getMonth() + 1%>.                         
+                            <%= ride.date.getMonth() + 1%>.  
+                            <!-- new Intl.DateTimeFormat('eu', { month: "long"}).format(new Date(ride.date)) -->
                             <span class="d-none d-sm-inline"><%= ride.date.getFullYear() %></span>
                         </td>
 

@@ -13,8 +13,8 @@
     </div>
     <div class="col-xl-6">
         <div class="card mb-4">
-            <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Bar Chart Example</div>
-            <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+            <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Drive by month</div>
+            <div class="card-body"><canvas id="driveByMonthChart" width="100%" height="40"></canvas></div>
         </div>
     </div>
 </div>
@@ -22,97 +22,102 @@
 <!-- <script src="/assets/demo/chart-bar-demo.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
-<!-- Bar chart -->
 <script>
-    // get the current_user
-    var user = <%- JSON.stringify(current_user) %>
-    
-    function get_rides(user){
-        // return arr of all rides (most recent first)
-        var rides = []
-        user.vehicles.forEach(function(vehicle){
-            vehicle.rides.forEach(function(ride){
-                rides.push(ride)
-            });
+// GET DATA    
+// return arr of all rides (most recent first)
+function get_rides(user){
+    var rides = []
+    user.vehicles.forEach(function(vehicle){
+        vehicle.rides.forEach(function(ride){
+            rides.push(ride)
         });
-        return rides.reverse();
-    };
-    
-
-    function get_last_months(rides, n_months=6){
-        // return object with month:km driven for the last n_months
-        drive_by_months = {}
-        rides.forEach(function(ride){
-            var month = new Intl.DateTimeFormat('eu', { month: "long"}).format(new Date(ride.date))
-            if(drive_by_months.month){
-                drive_by_months[month] += ride.distance
-            }
-            else{
-                drive_by_months[month] = ride.distance
-            }
-                   
-    
-            if(Object.keys(drive_by_months).length == 7){
-                return drive_by_months;
-            }
-        })
-        return drive_by_months;
-
-    }
-
-    var rides = get_rides(user);
-    var drive_by_months = get_last_months(rides);
-    console.log(drive_by_months);
-    
-
-
-
-    // Set new default font family and font color to mimic Bootstrap's default styling
-    Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-    Chart.defaults.global.defaultFontColor = '#292b2c';
-
-    // Bar Chart Example
-    var ctx = document.getElementById("myBarChart");
-    var myLineChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: ["January", "February", "March", "April", "May", "June"],
-        datasets: [{
-        label: "Revenue",
-        backgroundColor: "rgba(2,117,216,1)",
-        borderColor: "rgba(2,117,216,1)",
-        data: [6000, 5312, 6251, 7841, 9821, 14984],
-        }],
-    },
-    options: {
-        scales: {
-        xAxes: [{
-            time: {
-            unit: 'month'
-            },
-            gridLines: {
-            display: false
-            },
-            ticks: {
-            maxTicksLimit: 6
-            }
-        }],
-        yAxes: [{
-            ticks: {
-            min: 0,
-            max: 15000,
-            maxTicksLimit: 5
-            },
-            gridLines: {
-            display: true
-            }
-        }],
-        },
-        legend: {
-        display: false
-        }
-    }
     });
+    return rides.reverse();
+};
+
+// return object (map) with month:km driven for the last n_months
+function get_drive_by_months(rides, n=6){
+    var month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var months = [];
+    var drive_by_months = [];
+    var today = new Date();
+    var d, month, year, ride_date, drive;
+
+    for(var i = n-1; i >= 0; i -= 1){
+        d = new Date(today.getFullYear(), today.getMonth() - i, 1);
+        month = d.getMonth();
+        year = d.getFullYear();
+        distance = 0;
+        rides.forEach(function(ride){
+            ride_date = new Date(ride.date);
+            if(ride_date.getMonth() == month && ride_date.getFullYear() == year){
+                distance += ride.distance
+            }   
+        });
+        months.push(month_names[month])
+        drive_by_months.push(distance);
+    }
+    return [months, drive_by_months];
+};
+
+// get max boundary for the graph axe
+// function get_max_bound(arr){
+//     return Math.round(Math.max.apply(Math, drive_by_months[1])/100) * 100;
+// }
+
+// get the current_user
+var user = <%- JSON.stringify(current_user) %>;
+var rides = get_rides(user);
+var drive_by_months = get_drive_by_months(rides);
+// var max_bound = get_max_bound(drive_by_months); 
+
+
+// CHARTS CONFIG
+// Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#292b2c';
+
+// BAR CHART CONFIG
+var ctx = document.getElementById("driveByMonthChart");
+var myLineChart = new Chart(ctx, {
+type: 'bar',
+data: {
+    labels: drive_by_months[0],
+    datasets: [{
+    label: "Km driven",
+    backgroundColor: "rgba(2,117,216,1)",
+    borderColor: "rgba(2,117,216,1)",
+    data: drive_by_months[1]
+    }],
+},
+options: {
+    scales: {
+    xAxes: [{
+        time: {
+        unit: 'month'
+        },
+        gridLines: {
+        display: false
+        },
+        ticks: {
+        maxTicksLimit: 6
+        }
+    }],
+    yAxes: [{
+        ticks: {
+        maxTicksLimit: 5
+        },
+        gridLines: {
+        display: true
+        }
+    }],
+    },
+    legend: {
+    display: false
+    }
+}
+});
+
 </script>
 <script src="/assets/demo/chart-area-demo.js"></script>
 
