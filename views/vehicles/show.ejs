@@ -93,13 +93,19 @@
                 <tbody>
                     <% vehicle.rides.forEach(ride => { %>
                     <tr>
-                        <td>
-                            <%= new Intl.DateTimeFormat('en', { day: 'numeric' }).format(ride.time) %>.
-                            <%= new Intl.DateTimeFormat('en', { month:'numeric' }).format(ride.time) %>.                         
-                            <%= new Intl.DateTimeFormat('en', { year: 'numeric' }).format(ride.time) %>
-                            <!-- for sorting by time -->
-                            <span style="display: none;"><%= ride.date %> </span>
+                        <!-- create a string to sort date -->
+                        <% var sort_date = ride.date.getFullYear().toString() %>
+                        <% sort_date += ("0" + ride.date.getMonth().toString()).slice(-2) %>
+                        <% sort_date += ("0" + ride.date.getDate().toString()).slice(-2) %>
+                        <% sort_date += ("0" + ride.date.getHours().toString()).slice(-2) %>
+                        <% sort_date += ("0" + ride.date.getMinutes().toString()).slice(-2) %> 
+
+                        <td data-sort="<%= sort_date %>">
+                            <%= ride.date.getDate() %>.
+                            <%= ride.date.getMonth() + 1%>.                         
+                            <span class="d-none d-sm-inline"><%= ride.date.getFullYear() %></span>
                         </td>
+
                         <td class="d-none d-sm-block"><%= ride.from%> </td>
                         <td><%= ride.to%> </td>
                         <td><%= ride.distance %> </td>

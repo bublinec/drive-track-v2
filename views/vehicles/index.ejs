@@ -43,8 +43,14 @@
         // return object with month:km driven for the last n_months
         drive_by_months = {}
         rides.forEach(function(ride){
-            var month = new Intl.DateTimeFormat('eu', { month: "long"}).format(new Date(ride.time))
-            drive_by_months[month] = 0;
+            var month = new Intl.DateTimeFormat('eu', { month: "long"}).format(new Date(ride.date))
+            if(drive_by_months.month){
+                drive_by_months[month] += ride.distance
+            }
+            else{
+                drive_by_months[month] = ride.distance
+            }
+                   
     
             if(Object.keys(drive_by_months).length == 7){
                 return drive_by_months;
