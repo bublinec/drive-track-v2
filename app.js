@@ -19,7 +19,7 @@ const authRoutes = require("./routes/auth"),
 
 
 // DB:
-mongoose.connect("mongodb://localhost/drive-track", {
+mongoose.connect("mongodb+srv://Juraj:juraj991@cluster0-xom14.gcp.mongodb.net/test?retryWrites=true&w=majority", {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useCreateIndex: true
