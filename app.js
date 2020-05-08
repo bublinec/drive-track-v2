@@ -19,7 +19,7 @@ const authRoutes = require("./routes/auth"),
 
 
 // DB:
-mongoose.connect("mongodb+srv://Juraj:juraj991@cluster0-xom14.gcp.mongodb.net/test?retryWrites=true&w=majority", {
+mongoose.connect("mongodb://heroku_3r0400cl:7bfketltlgra774r6l9f26agdb@ds147450.mlab.com:47450/heroku_3r0400cl", {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useCreateIndex: true
