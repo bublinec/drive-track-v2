@@ -2,33 +2,38 @@
 body {
     background-color: #000;
     font-family: 'Ubuntu', sans-serif;
+    text-shadow: 2px 2px 150px rgba(0, 0, 0, 1);
   }
   
 .overlay {
     z-index: 1;
     position: relative;
-
+    background: rgba(0, 0, 0, 0.45);
 }
 
   #landing-header {
     z-index: 1;
     position: relative;
     text-align: center;
-    padding-top: 35vh;
-    height: 100vh;
-    text-shadow: 0px 0px 30px rgba(0, 0, 0, 1);
-    background: rgba(0, 0, 0, 0.75);
-}
+    padding-top: 25vh;
+    height: calc(100vh - 51px);
+    color: rgb(255, 255, 255) !important;
 
+}
+#landing-header p a{
+  color: rgb(255, 255, 255) !important;
+  text-decoration: none !important;
+}
   
   #landing-header h1 {
-    color: rgb(255, 255, 255);
-    font-size: 5rem;
+    font-size: 4em;
   }
   
   #landing-header p{
-      font-size: 1.8rem;
-      padding-bottom: 2%;
+    z-index: 1;
+    font-size: 1.8rem;
+    padding-top: 3%;
+    padding-bottom: 4%;
   }
 
   .slideshow { 
@@ -103,7 +108,7 @@ body {
 
   /* footer */
   #layoutAuthentication_footer{
-      z-index: 3;
+      z-index: 2;
   }
 
   footer{

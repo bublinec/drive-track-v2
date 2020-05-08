@@ -5,14 +5,13 @@ const express = require("express"),
       Ride = require("../modules/ride");
       
 
-
 // ROUTES
 router.get("/", function(req, res){
     if(req.isAuthenticated()){
         res.redirect("/vehicles");
     }
     else{
-        res.redirect("/login");
+        res.render("landing");
     }
 })
 
