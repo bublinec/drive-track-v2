@@ -1,7 +1,5 @@
 <%- include("../partials/header") %> 
 
-
-
 <h1 class="mt-4">Dashboard</h1>
 
 <div class="row">
@@ -17,11 +15,21 @@
             <div class="card-body"><canvas id="driveByMonthChart" width="100%" height="40"></canvas></div>
         </div>
     </div>
+    <div class="col-lg-6">
+      <div class="card mb-4">
+          <div class="card-header"><i class="fas fa-car mr-1"></i>Vehicles</div>
+          <div class="card-body"><canvas id="vehiclesChart" width="100%" height="50"></canvas></div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card mb-4">
+          <div class="card-header"><i class="fas fa-users mr-1"></i>Drivers</div>
+          <div class="card-body"><canvas id="driversChart" width="100%" height="50"></canvas></div>
+      </div>
+    </div>
 </div>
 
-<!-- <script src="/assets/demo/chart-bar-demo.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-
 <script>
 // ************************************************
 // GET DATA 
@@ -46,14 +54,43 @@ Date.prototype.isSameMonthAs = function(pDate) {
 
 // return arr of all rides (most recent first)
 function getRides(user){
-    var rides = []
+    var rides = [];
     user.vehicles.forEach(function(vehicle){
         vehicle.rides.forEach(function(ride){
-            rides.push(ride)
+            rides.push(ride);
         });
     });
     return rides.reverse();
 };
+
+// return object (map/dict) with driver:km
+function getDriversKm(rides){
+  drivers_km = {};
+  rides.forEach(function(ride){
+    if(drivers_km[ride.driver]){
+      drivers_km[ride.driver] += ride.distance;
+    }
+    else{
+      drivers_km[ride.driver] = ride.distance;
+    }
+  })
+  return drivers_km;
+}
+
+// return array of vehicles and km per vehicle
+function getVehiclesKm(user){
+  vehicles = [];
+  km_per_vehicle = [];
+  user.vehicles.forEach(function(vehicle){
+        km = 0
+        vehicle.rides.forEach(function(ride){
+            km += ride.distance;
+        });
+        vehicles.push(vehicle.brand + " " + vehicle.model)
+        km_per_vehicle.push(km)
+      });
+  return [vehicles, km_per_vehicle]
+}
 
 // return array of last n months and distance driven
 function getDriveByMonths(rides, n=6){
@@ -101,11 +138,13 @@ function getDriveByDays(rides, n=7){
 };
 
 
-// get the current_user
+// get actual data for the current user
 var user = <%- JSON.stringify(current_user) %>;
 var rides = getRides(user);
-var drive_by_months = getDriveByMonths(rides);
-var drive_by_days = getDriveByDays(rides, 10);
+var drive_by_months = getDriveByMonths(rides, 10);
+var drive_by_days = getDriveByDays(rides, 7);
+var drivers_km = getDriversKm(rides);
+var km_per_vehicle = getVehiclesKm(user);
 
 
 // ************************************************
@@ -202,6 +241,43 @@ var myLineChart = new Chart(ctx, {
         }
       }],
     },
+    legend: {
+      display: false
+    }
+  }
+});
+
+// VEHICLES PIE CHART
+var ctx = document.getElementById("vehiclesChart");
+var myPieChart = new Chart(ctx, {
+  type: 'pie',
+  data: {
+    labels: km_per_vehicle[0],
+    datasets: [{
+      data: km_per_vehicle[1],
+      backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+    }],
+  },
+  options: {
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+// DRIVERS PIE CHART
+var ctx = document.getElementById("driversChart");
+var myPieChart = new Chart(ctx, {
+  type: 'pie',
+  data: {
+    labels: Object.keys(drivers_km),
+    datasets: [{
+      data: Object.values(drivers_km),
+      backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+    }],
+  },
+  options: {
     legend: {
       display: false
     }

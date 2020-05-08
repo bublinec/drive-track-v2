@@ -10,9 +10,9 @@
         <span id="show_tools_button"><i class="fas fa-search mt-2 mr-3 float-right" title="Tools"></i></span> 
     </div>
     
-    <div class="card-body">
+    <div class="card-body rides_table">
         <form id="add_ride_form" action="/vehicles/<%= vehicle._id %>/rides" method="post">
-            <div class="form-row mb-4">
+            <div class="form-row mb-4 mx-2">
                 <div class="col-md-3">
                     <label for="ride[date]">Date</label>
                         <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
@@ -85,7 +85,7 @@
                         <th>Date</th>
                         <th class="d-none d-sm-block">From</th>
                         <th>To</th>
-                        <th>Distance</th>
+                        <th>Km</th>
                         <th>Driver</th>
                         <th class="d-none d-sm-block">Round</th>
                     </tr>

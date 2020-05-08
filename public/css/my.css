@@ -29,6 +29,11 @@ body{
     font-size: 0.95rem;
 }
 
+.card-body.rides_table{
+    padding-right: 0;
+    padding-left: 0;
+}
+
 
 /* Del ride */
 .del{

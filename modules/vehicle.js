@@ -4,13 +4,12 @@ var vehicleSchema = new mongoose.Schema({
     brand: String,
     model: String,
     mileage: Number,
-    image: String,
-    drivers: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
-        }
-    ],
+    // drivers: [
+    //     {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: "User"
+    //     }
+    // ],
     rides: [
         {
             type: mongoose.Schema.Types.ObjectId,
