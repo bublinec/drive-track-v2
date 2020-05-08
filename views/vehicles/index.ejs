@@ -6,13 +6,27 @@
     <div class="col-xl-6">
         <div class="card mb-4">
             <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Drive per day</div>
-            <div class="card-body"><canvas id="driveByDayChart" width="100%" height="40"></canvas></div>
+            <div class="card-body">
+                <canvas id="driveByDayChart" width="100%" height="40"></canvas>
+                <div class="pt-3 pl-2">
+                  <span>Show</span>
+                  <input class="form-control form-control-sm col-md-2 d-inline" id="daysInput" name="days" type="number" value="7" required/>
+                  <span>days</span>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-xl-6">
         <div class="card mb-4">
             <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Drive by months</div>
-            <div class="card-body"><canvas id="driveByMonthChart" width="100%" height="40"></canvas></div>
+            <div class="card-body">
+              <canvas id="driveByMonthChart" width="100%" height="40"></canvas>
+              <div class="pt-2 pl-2">
+                <span>Show</span>
+                <input class="form-control form-control-sm col-md-2 d-inline" id="monthsInput" name="months" type="number" value="7" required/>
+                <span>months</span>
+              </div>
+            </div>
         </div>
     </div>
     <div class="col-lg-6">
@@ -29,7 +43,6 @@
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 <script>
 // ************************************************
 // GET DATA 
@@ -139,9 +152,25 @@ function getDriveByDays(rides, n=7){
 
 
 // get actual data for the current user
+$("#monthsInput").on("change", function() {
+  var months = $(this).val();
+  var drive_by_months = getDriveByMonths(rides, months);
+  driveByMonthChart.data.labels = drive_by_months[0];
+  driveByMonthChart.data.datasets[0].data = drive_by_months[1];
+  driveByMonthChart.update();    
+});
+
+$("#daysInput").on("change", function() {
+  var days = $(this).val();
+  var drive_by_days = getDriveByDays(rides, days);
+  driveByDayChart.data.labels = drive_by_days[0];
+  driveByDayChart.data.datasets[0].data = drive_by_days[1];
+  driveByDayChart.update();   
+});
+
 var user = <%- JSON.stringify(current_user) %>;
 var rides = getRides(user);
-var drive_by_months = getDriveByMonths(rides, 10);
+var drive_by_months = getDriveByMonths(rides, 7);
 var drive_by_days = getDriveByDays(rides, 7);
 var drivers_km = getDriversKm(rides);
 var km_per_vehicle = getVehiclesKm(user);
@@ -155,51 +184,10 @@ var km_per_vehicle = getVehiclesKm(user);
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
-// DRIVE BY MONTH BAR CHART
-var ctx = document.getElementById("driveByMonthChart");
-var myLineChart = new Chart(ctx, {
-type: 'bar',
-data: {
-    labels: drive_by_months[0],
-    datasets: [{
-    label: "Km driven",
-    backgroundColor: "rgba(2,117,216,1)",
-    borderColor: "rgba(2,117,216,1)",
-    data: drive_by_months[1]
-    }],
-},
-options: {
-    scales: {
-    xAxes: [{
-        time: {
-        unit: 'month'
-        },
-        gridLines: {
-        display: false
-        },
-        ticks: {
-        maxTicksLimit: 6
-        }
-    }],
-    yAxes: [{
-        ticks: {
-        min: 0,
-        maxTicksLimit: 5
-        },
-        gridLines: {
-        display: true
-        }
-    }],
-    },
-    legend: {
-      display: false
-    }
-  }
-});
 
 // DRIVE BY DAY AREA CHART
 var ctx = document.getElementById("driveByDayChart");
-var myLineChart = new Chart(ctx, {
+var driveByDayChart = new Chart(ctx, {
   type: 'line',
   data: {
     labels: drive_by_days[0],
@@ -227,9 +215,6 @@ var myLineChart = new Chart(ctx, {
         gridLines: {
           display: false
         },
-        ticks: {
-          maxTicksLimit: 7
-        }
       }],
       yAxes: [{
         ticks: {
@@ -246,6 +231,47 @@ var myLineChart = new Chart(ctx, {
     }
   }
 });
+
+
+// DRIVE BY MONTH BAR CHART
+var ctx = document.getElementById("driveByMonthChart");
+var driveByMonthChart = new Chart(ctx, {
+type: 'bar',
+data: {
+    labels: drive_by_months[0],
+    datasets: [{
+    label: "Km driven",
+    backgroundColor: "rgba(2,117,216,1)",
+    borderColor: "rgba(2,117,216,1)",
+    data: drive_by_months[1]
+    }],
+},
+options: {
+    scales: {
+    xAxes: [{
+        time: {
+        unit: 'month'
+        },
+        gridLines: {
+        display: false
+        },
+    }],
+    yAxes: [{
+        ticks: {
+          min: 0,
+          maxTicksLimit: 5
+        },
+        gridLines: {
+        display: true
+        }
+    }],
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
 
 // VEHICLES PIE CHART
 var ctx = document.getElementById("vehiclesChart");

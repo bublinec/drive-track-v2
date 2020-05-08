@@ -13,9 +13,6 @@ router.get("/", middleware.isLoggedIn, function(req, res){
 })
 
 // new - form is displayed using modal
-// router.get("/new", middleware.isLoggedIn, function(req, res){
-//     res.render("vehicles/new.ejs");
-// });
 
 // create
 router.post("/", middleware.isLoggedIn, function(req, res){ 

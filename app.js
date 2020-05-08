@@ -85,10 +85,10 @@ app.use("/", indexRoutes);
 app.use("/", authRoutes);
 
 // Start server
-const port = process.env.PORT || 3000; 
+const port = process.env.PORT || 8000; 
 app.listen(port, function(err){
     if(err){
-        console.log(err);     
+        console.log(err);
     }
     else{
         console.log("Server listening on the port: ", port);

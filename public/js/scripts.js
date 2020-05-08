@@ -16,7 +16,6 @@
     });
 })(jQuery);
 
-
 // ***************************************
 // Toggle new ride form
 $("#add_ride_button").click(function(){
@@ -25,7 +24,8 @@ $("#add_ride_button").click(function(){
 
 // Toggle tools (using flex!) 
 $("#show_tools_button").click(function(){
-    $("#dataTable_wrapper .row:first-child").toggleClass("show");
+    $("#dataTable_wrapper .row:first-child").toggleClass("show px-3");
+
 });
 
 // Typed text

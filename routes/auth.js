@@ -30,6 +30,8 @@ router.post("/register", function(req, res){
         }
         // if successfully create a user, then login and redirect
         passport.authenticate("local")(req, res, function(){
+            welcome_message = "Welcome " + req.body.username + "! On this page you will see your driving data. Tap 'Vehicles' on the side bar to add new vehicle and add your first ride!"
+            req.flash("success", welcome_message);
             res.redirect("/vehicles");
         });
     });
