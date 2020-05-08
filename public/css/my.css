@@ -59,3 +59,23 @@ tr:hover .del{
 .inline{
     display: inline;
 }
+
+/* Scrollbar */
+
+html {
+    scrollbar-face-color: #212529;
+    scrollbar-base-color: #212529;
+    scrollbar-3dlight-color: #212529;
+    scrollbar-highlight-color: #212529;
+    scrollbar-track-color: #343a40;
+    scrollbar-arrow-color: #343a40;
+    scrollbar-shadow-color: #212529;
+    scrollbar-dark-shadow-color: #212529;
+  }
+  
+  ::-webkit-scrollbar { width: 11px; height: 3px;}
+  ::-webkit-scrollbar-track {  background-color: #212529;}
+  ::-webkit-scrollbar-track-piece { background-color: #343a40;}
+  ::-webkit-scrollbar-thumb { height: 50px; background-color: #212529; border-radius: 3px;}
+  ::-webkit-scrollbar-corner { background-color: #212529;}}
+  ::-webkit-resizer { background-color: #212529;}
