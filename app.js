@@ -19,7 +19,13 @@ const authRoutes = require("./routes/auth"),
 
 
 // DB:
-mongoose.connect("mongodb://heroku_3r0400cl:7bfketltlgra774r6l9f26agdb@ds147450.mlab.com:47450/heroku_3r0400cl", {
+// mongoose.connect("mongodb://heroku_3r0400cl:7bfketltlgra774r6l9f26agdb@ds147450.mlab.com:47450/heroku_3r0400cl", {
+//     useNewUrlParser: true, 
+//     useUnifiedTopology: true,
+//     useCreateIndex: true
+// });
+
+mongoose.connect("mongodb://localhost/drive-track", {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useCreateIndex: true
@@ -55,7 +61,6 @@ app.use(function(req, res, next){
     
     if(req.user){
         // find user, populate and pass it to all templates
-        // (exec is a User schema function)
         User.findById(req.user._id).populate({
             path: "vehicles",
             populate: {
@@ -64,7 +69,6 @@ app.use(function(req, res, next){
         }).exec(function(err, populated_user){
             res.locals.current_user = populated_user;
             next(); // proceed to the next function
-
         });
     }
     else{

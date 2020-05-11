@@ -2,6 +2,7 @@
 
 <h1 class="mt-4"><%= vehicle.brand %> <%= vehicle.model %> </h1>
 
+<!-- RIDES -->
 <div class="card mb-4 mt-4">
     <div class="card-header">
         <i class="fas fa-table mr-1"></i>
@@ -118,8 +119,8 @@
                             <% }else{ %>
                                 <i class="fas fa-times"></i> 
                             <% } %> 
-                            <form class=".del" action="/vehicles/<%= vehicle._id %>/rides/<%= ride._id %>?_method=DELETE" method="post">
-                                <button class="del"><i class="fas fa-trash-alt"></i></button>
+                            <form action="/vehicles/<%= vehicle._id %>/rides/<%= ride._id %>?_method=DELETE" method="post">
+                                <button class="table_button bg-danger"><i class="fas fa-trash-alt"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -129,6 +130,90 @@
         </div>
     </div>
 </div>
+
+<!-- DRIVERS -->
+<div class="card mb-4 mt-4">
+    <div class="card-header">
+        <i class="fas fa-users mr-1"></i>
+        Drivers
+        <span id="add_ride_button"><i class="fas fa-plus mt-2 mr-1 float-right" title="Add driver" data-toggle="modal" data-target="#addDrverModal"></i></span>
+        <span id="show_tools_button"><i class="fas fa-search mt-2 mr-3 float-right" title="Tools"></i></span> 
+
+    </div>
+    <div class="card-body">    
+        <div class="table-responsive">
+            <table class="table table-bordered" id="driversTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% vehicle.drivers.forEach(driver => { %>
+                    <tr>
+                        <td>
+                            <%= driver.username %>
+                            <form action="/vehicles/<%= vehicle._id %>/drivers/<%= driver._id %>?_method=delete" method="POST">
+                                <button class="table_button bg-danger"><i class="fas fa-user-minus"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }); %> 
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Add driver -->
+<!-- Modal -->
+<div id="addDrverModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+      <div class="modal-body">
+        <p>Add driver to <strong><%= vehicle.brand %> <%= vehicle.model %></strong>:</p>
+        <div class="card mb-4 mt-4">
+            <div class="card-header">
+                <i class="fas fa-users mr-1"></i>
+                Drivers
+            </div>
+            <div class="card-body">    
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="driversTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% users.forEach(user => { %>
+                            <tr>
+                                <td>
+                                    <%= user.username %>
+                                    <form action="/vehicles/<%= vehicle._id %>/drivers/<%= user._id %>" method="POST">
+                                        <button class="table_button bg-success"><i class="fas fa-user-plus"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% }); %> 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-xs btn-danger ml-1" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
 
 <!-- Edit -->
 <!-- Edit button - trigger modal -->
@@ -176,6 +261,8 @@
 
   </div>
 </div>
+
+
 
 <!-- Delete -->
 <!-- Delete button - trigger modal -->

@@ -5,3 +5,16 @@ $(document).ready(function() {
     "bInfo" : false
   });
 });
+
+$(document).ready(function() {
+  $('#driversTable').DataTable({
+    "order": [[0, "desc"]],
+    "bInfo" : false,
+    "searching": true,
+    "bPaginate": false,
+    "lengthChange": false
+  });
+});
+
+
+

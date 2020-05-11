@@ -20,6 +20,7 @@
 // Toggle new ride form
 $("#add_ride_button").click(function(){
     $("#add_ride_form").toggle();
+    $(".table_button svg").css("display: inline");
 });
 
 // Toggle tools (using flex!) 

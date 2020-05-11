@@ -29,13 +29,17 @@ body{
     font-size: 0.95rem;
 }
 
-.card-body.rides_table{
+.card-body {
     padding-right: 0;
     padding-left: 0;
 }
 
+#driversTable_wrapper .row .col-sm-12.col-md-6:first-child{
+    display: none;
+}
+
 /* Del ride */
-.del{
+.table_button{
     height: 48px;
     margin: -2.2rem 0;
     border: none;
@@ -45,7 +49,6 @@ body{
     transition: 0.2s linear;
     display: inline-block;
     color: #f1faee;
-    background-color: #dc3545;
     position: absolute;
     right: 0;
     /* to hide at before hover */
@@ -53,10 +56,17 @@ body{
     opacity: 0;
 }
 
-tr:hover .del{
+.table_button svg{
+    display: none;
+}
+
+tr:hover .table_button{
     width: 48px;
     opacity: 1;
+}
 
+tr:hover .table_button svg{
+    display: inline;
 }
 
 /* Delete vehicle */
@@ -77,7 +87,7 @@ html {
     scrollbar-dark-shadow-color: #212529;
   }
   
-  ::-webkit-scrollbar { width: 11px; height: 3px;}
+  ::-webkit-scrollbar { width: 11px; height: 0px;}
   ::-webkit-scrollbar-track {  background-color: #212529;}
   ::-webkit-scrollbar-track-piece { background-color: #343a40;}
   ::-webkit-scrollbar-thumb { height: 50px; background-color: #212529; border-radius: 3px;}
