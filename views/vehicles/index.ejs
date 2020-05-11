@@ -68,7 +68,7 @@ Date.prototype.isSameMonthAs = function(pDate) {
 // return arr of all rides (most recent first)
 function getRides(user){
     var rides = [];
-    user.vehicles.forEach(function(vehicle){
+    user.my_vehicles.forEach(function(vehicle){
         vehicle.rides.forEach(function(ride){
             rides.push(ride);
         });
@@ -94,7 +94,7 @@ function getDriversKm(rides){
 function getVehiclesKm(user){
   vehicles = [];
   km_per_vehicle = [];
-  user.vehicles.forEach(function(vehicle){
+  user.my_vehicles.forEach(function(vehicle){
         km = 0
         vehicle.rides.forEach(function(ride){
             km += ride.distance;

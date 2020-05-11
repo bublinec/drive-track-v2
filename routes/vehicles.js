@@ -7,6 +7,7 @@ const express = require("express"),
       User = require("../modules/user"),
       middleware = require("../middleware");
 
+
 // index - all cars are displayed ALSO on the side nav
 // index = dashboard
 router.get("/", middleware.isLoggedIn, function(req, res){
@@ -19,17 +20,15 @@ router.get("/", middleware.isLoggedIn, function(req, res){
 router.post("/", middleware.isLoggedIn, function(req, res){ 
     // create pond and save it to db
     vehicle = req.body.vehicle;
-    vehicle.author = {
-        id: req.user._id,
-        username: req.user.username
-    }
+    vehicle.author = req.user._id;
+    vehicle.drivers = [req.user._id];
     Vehicle.create(vehicle, function(err, created_vehicle){
         if(err){
             req.flash("error", err.message); 
             res.redirect("back");
         }
         else{
-            req.user.vehicles.push(created_vehicle);
+            req.user.my_vehicles.push(created_vehicle);
             req.user.save();
             console.log("\nCreated vehicle:\n", created_vehicle);
             // redirect to ponds page with a success flash message
@@ -38,6 +37,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
         }
     });
 });
+
 
 // show
 router.get("/:id", middleware.isLoggedIn, function(req, res){
@@ -56,16 +56,22 @@ router.get("/:id", middleware.isLoggedIn, function(req, res){
                     res.redirect("back");
                 }
                 else{
+                    users_not_drivers = []
+                    users.forEach(user => {
+                        if(!(user.isAmong(found_vehicle.drivers)))
+                            if(!(req.user._id.equals(user._id)))
+                                users_not_drivers.push(user);
+                        });
                     // render the show page
                     res.render("vehicles/show", {
                         vehicle: found_vehicle,
-                        users: users
-                    })
+                        users: users_not_drivers
+                    });
                 }
             });
-        }          
+        }
     });
-});
+}) ;
 
 // edit - form is displayed using modal
 
@@ -88,7 +94,7 @@ router.put("/:id", middleware.isLoggedIn, function(req, res){
 // destroy
 router.delete("/:id", middleware.isLoggedIn, function(req, res){
     // remove reference from user object
-    req.user.vehicles.remove(mongoose.Types.ObjectId(req.params.id));
+    req.user.my_vehicles.remove(mongoose.Types.ObjectId(req.params.id));
     req.user.save();
     // remove all rides associted with the vehicle
     Vehicle.findById(req.params.id, function(err, found_vehicle){
@@ -102,6 +108,18 @@ router.delete("/:id", middleware.isLoggedIn, function(req, res){
                     if(err){
                         req.flash("error", err.message);
                         res.redirect("back");
+                    }
+                });
+            });
+            found_vehicle.drivers.forEach(function(driver){
+                User.findById(driver_id, function(err, found_user){
+                    if(err){f
+                        req.flash("error", err.message);
+                        res.redirect("back");
+                    }
+                    else{
+                        found_user.other_vehicles.remove(mongoose.Types.ObjectId(req.params.id));
+                        found_user.save();
                     }
                 });
             });
@@ -128,8 +146,12 @@ router.post("/:id/drivers/:driver_id", middleware.isLoggedIn, function(req, res)
                     res.redirect("back");
                 }
                 else{
+                    // add user to vehicle.drivers
                     found_vehicle.drivers.push(found_user);
                     found_vehicle.save();
+                    // add vehicle to user other_vehicles
+                    found_user.other_vehicles.push(found_vehicle);
+                    found_user.save();
                     req.flash("success", "Driver added!");
                     res.redirect("/vehicles/" + req.params.id);
                 }
@@ -147,12 +169,29 @@ router.delete("/:id/drivers/:driver_id", middleware.isLoggedIn, function(req, re
             res.redirect("back");
         }
         else{
-            found_vehicle.drivers.remove(mongoose.Types.ObjectId(req.params.driver_id));
-            found_vehicle.save();
-            req.flash("success", "Driver removed!");
-            res.redirect("/vehicles/" + req.params.id);
-        }
-    });
+            User.findById(req.params.driver_id, function(err, found_user){
+                if(err){
+                    req.flash("error", err.message);
+                    res.redirect("back");
+                }
+                else{
+                    // remove user from vehicle.drivers
+                    found_vehicle.drivers.remove(mongoose.Types.ObjectId(req.params.driver_id));
+                    found_vehicle.save();
+                    // remove user from user's other_vehicles
+                    found_user.other_vehicles.remove(mongoose.Types.ObjectId(req.params.id));
+                    found_user.save();
+                    if(req.user._id.equals(found_user._id)){
+                        req.flash("success", "Vehicle removed from your account!");
+                        res.redirect("/vehicles");
+                    }
+                    else{
+                        req.flash("success", "Driver removed!");
+                        res.redirect("/vehicles/" + req.params.id);
+                    }
+                }
+        });
+    }});
 });
 
 module.exports = router;

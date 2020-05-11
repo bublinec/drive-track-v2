@@ -62,7 +62,12 @@ app.use(function(req, res, next){
     if(req.user){
         // find user, populate and pass it to all templates
         User.findById(req.user._id).populate({
-            path: "vehicles",
+            path: "my_vehicles",
+            populate: {
+                path: "rides"
+            }
+        }).populate({
+            path: "other_vehicles",
             populate: {
                 path: "rides"
             }
@@ -83,7 +88,7 @@ app.use("/", indexRoutes);
 app.use("/", authRoutes);
 
 // Start server
-const port = process.env.PORT || 8000; 
+const port = process.env.PORT || 3000; 
 app.listen(port, function(err){
     if(err){
         console.log(err);

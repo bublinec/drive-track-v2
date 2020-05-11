@@ -16,5 +16,16 @@ $(document).ready(function() {
   });
 });
 
+$(document).ready(function() {
+  $('#addDriversTable').DataTable({
+    "order": [[0, "desc"]],
+    "bInfo" : false,
+    "searching": true,
+    "bPaginate": false,
+    "lengthChange": false,
+    "pageLength": 5
+  });
+});
+
 
 

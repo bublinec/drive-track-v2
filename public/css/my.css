@@ -29,19 +29,38 @@ body{
     font-size: 0.95rem;
 }
 
-.card-body {
-    padding-right: 0;
-    padding-left: 0;
+.table-no-border {
+    padding: 10px 0 0 0 !important;
 }
 
-#driversTable_wrapper .row .col-sm-12.col-md-6:first-child{
+#driversTable_wrapper .row .col-sm-12.col-md-6:first-child,
+#addDriversTable_wrapper .row .col-sm-12.col-md-6:first-child,
+#driversTable_wrapper thead,
+#addDriversTable_wrapper thead
+{
     display: none;
 }
+
+#driversTable_wrapper .row .col-sm-12.col-md-6 label,
+#addDriversTable_wrapper .row .col-sm-12.col-md-6 label{ 
+    float: left;
+}
+
+#driversTable_wrapper .row .col-sm-12.col-md-6 input,
+#addDriversTable_wrapper .row .col-sm-12.col-md-6 input{ 
+    max-width: 40vw !important;
+}
+
+
+table.dataTable{
+    margin-bottom: 0px !important;
+}
+
 
 /* Del ride */
 .table_button{
     height: 48px;
-    margin: -2.2rem 0;
+    margin: -2.25rem 0;
     border: none;
     text-align: center;
     font-size: 1.6rem;

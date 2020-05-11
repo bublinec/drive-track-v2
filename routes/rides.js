@@ -24,11 +24,11 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     else{
         new_ride.round_trip = false;
     }
-    // get author
-    // new_ride.author = {
-    //     id: req.user._id,
-    //     username: req.user.username
-    // }
+    // get driver
+    new_ride.driver = {
+        id: req.user._id,
+        username: req.user.username
+    }
     // lookup the vehicle from request
     Vehicle.findById(req.params.id, function(err, found_vehicle){
         if(err){

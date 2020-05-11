@@ -11,7 +11,7 @@
         <span id="show_tools_button"><i class="fas fa-search mt-2 mr-3 float-right" title="Tools"></i></span> 
     </div>
     
-    <div class="card-body rides_table">
+    <div class="card-body table-no-border rides_table">
         <form id="add_ride_form" action="/vehicles/<%= vehicle._id %>/rides" method="post">
             <div class="form-row mb-4 mx-2">
                 <div class="col-md-3">
@@ -45,12 +45,12 @@
                     </script>
                 </div>
                 
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label for="ride[from]">From</label>
                     <input class="form-control py-2" type="text" name="ride[from]" value="Zvolen" required/>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label for="ride[to]">To</label>
                     <input class="form-control py-2" type="text" name="ride[to]" required/>
                 </div>
@@ -60,10 +60,10 @@
                     <input class="form-control py-2" name="ride[distance]" type="number" required/>
                 </div>
 
-                <div class="col-md-2">
+                <!-- <div class="col-md-2">
                     <label for="ride[driver]">Driver</label>
                     <input class="form-control py-2" name="ride[driver]" type="text" value="<%= current_user.username %> " required/>
-                </div>
+                </div> -->
 
                 <div class="col-md-2">
                     <div class="custom-control custom-checkbox mt-2 mt-md-0 mb-2 mb-md-0">
@@ -93,37 +93,38 @@
                 </thead>
                 <tbody>
                     <% vehicle.rides.forEach(ride => { %>
-                    <tr>
-                        <!-- create a string to sort date -->
-                        <% var sort_date = ride.date.getFullYear().toString() %>
-                        <% sort_date += ("0" + ride.date.getMonth().toString()).slice(-2) %>
-                        <% sort_date += ("0" + ride.date.getDate().toString()).slice(-2) %>
-                        <% sort_date += ("0" + ride.date.getHours().toString()).slice(-2) %>
-                        <% sort_date += ("0" + ride.date.getMinutes().toString()).slice(-2) %> 
+                        <% if(vehicle.author.equals(current_user._id) || ride.driver.id.equals(current_user._id)){ %> 
+                            <tr>
+                                <!-- create a string to sort date -->
+                                <% var sort_date = ride.date.getFullYear().toString() %>
+                                <% sort_date += ("0" + ride.date.getMonth().toString()).slice(-2) %>
+                                <% sort_date += ("0" + ride.date.getDate().toString()).slice(-2) %>
+                                <% sort_date += ("0" + ride.date.getHours().toString()).slice(-2) %>
+                                <% sort_date += ("0" + ride.date.getMinutes().toString()).slice(-2) %> 
 
-                        <td data-sort="<%= sort_date %>">
-                            <%= ride.date.getDate() %>.
-                            <%= ride.date.getMonth() + 1%>.  
-                            <!-- new Intl.DateTimeFormat('eu', { month: "long"}).format(new Date(ride.date)) -->
-                            <span class="d-none d-sm-inline"><%= ride.date.getFullYear() %></span>
-                        </td>
+                                <td data-sort="<%= sort_date %>">
+                                    <%= ride.date.getDate() %>.
+                                    <%= ride.date.getMonth() + 1%>.  
+                                    <!-- new Intl.DateTimeFormat('eu', { month: "long"}).format(new Date(ride.date)) -->
+                                    <span class="d-none d-sm-inline"><%= ride.date.getFullYear() %></span>
+                                </td>
 
-                        <td class="d-none d-sm-block"><%= ride.from%> </td>
-                        <td><%= ride.to%> </td>
-                        <td><%= ride.distance %> </td>
-                        <td><%= ride.driver %>
-                        </td>
-                        <td class="d-none d-sm-block">
-                            <% if(ride.round_trip){ %>
-                                <i class="fas fa-check"></i>
-                            <% }else{ %>
-                                <i class="fas fa-times"></i> 
-                            <% } %> 
-                            <form action="/vehicles/<%= vehicle._id %>/rides/<%= ride._id %>?_method=DELETE" method="post">
-                                <button class="table_button bg-danger"><i class="fas fa-trash-alt"></i></button>
-                            </form>
-                        </td>
-                    </tr>
+                                <td class="d-none d-sm-block"><%= ride.from%> </td>
+                                <td><%= ride.to%> </td>
+                                <td><%= ride.distance %> </td>
+                                <td><%= ride.driver.username %></td>
+                                <td class="d-none d-sm-block">
+                                    <% if(ride.round_trip){ %>
+                                        <i class="fas fa-check"></i>
+                                    <% }else{ %>
+                                        <i class="fas fa-times"></i> 
+                                    <% } %>
+                                    <form action="/vehicles/<%= vehicle._id %>/rides/<%= ride._id %>?_method=DELETE" method="post">
+                                        <button class="table_button bg-danger"><i class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% } %> 
                     <% }); %> 
                 </tbody>
             </table>
@@ -131,44 +132,46 @@
     </div>
 </div>
 
-<!-- DRIVERS -->
-<div class="card mb-4 mt-4">
-    <div class="card-header">
-        <i class="fas fa-users mr-1"></i>
-        Drivers
-        <span id="add_ride_button"><i class="fas fa-plus mt-2 mr-1 float-right" title="Add driver" data-toggle="modal" data-target="#addDrverModal"></i></span>
-        <span id="show_tools_button"><i class="fas fa-search mt-2 mr-3 float-right" title="Tools"></i></span> 
+<% if(vehicle.author.equals(current_user._id)){ %> 
+    <!-- DRIVERS -->
+    <div class="card mb-4 mt-4">
+        <div class="card-header">
+            <i class="fas fa-users mr-1"></i>
+            Drivers
+            <span id="add_ride_button"><i class="fas fa-plus mt-2 mr-1 float-right" title="Add driver" data-toggle="modal" data-target="#addDrverModal"></i></span>
+            <span id="show_tools_button"><i class="fas fa-search mt-2 mr-3 float-right" title="Tools"></i></span> 
 
-    </div>
-    <div class="card-body">    
-        <div class="table-responsive">
-            <table class="table table-bordered" id="driversTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% vehicle.drivers.forEach(driver => { %>
-                    <tr>
-                        <td>
-                            <%= driver.username %>
-                            <form action="/vehicles/<%= vehicle._id %>/drivers/<%= driver._id %>?_method=delete" method="POST">
-                                <button class="table_button bg-danger"><i class="fas fa-user-minus"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                    <% }); %> 
-                </tbody>
-            </table>
+        </div>
+        <div class="card-body table-no-border">    
+            <div class="table-responsive">
+                <table class="table table-bordered" id="driversTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% vehicle.drivers.forEach(driver => { %>
+                        <tr>
+                            <td>
+                                <%= driver.username %>
+                                <form action="/vehicles/<%= vehicle._id %>/drivers/<%= driver._id %>?_method=delete" method="POST">
+                                    <button class="table_button bg-danger"><i class="fas fa-user-minus"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }); %> 
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+<% } %> 
 
 <!-- Add driver -->
 <!-- Modal -->
 <div id="addDrverModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog w-75">
 
     <!-- Modal content-->
     <div class="modal-content">
@@ -180,9 +183,9 @@
                 <i class="fas fa-users mr-1"></i>
                 Drivers
             </div>
-            <div class="card-body">    
+            <div class="card-body table-no-border">    
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="driversTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="addDriversTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>Username</th>
@@ -262,31 +265,55 @@
   </div>
 </div>
 
+<!-- If the  user created the vehicle, he can delete it -->
+<% if(vehicle.author.equals(current_user._id)){ %> 
+    <!-- Delete -->
+    <!-- Delete button - trigger modal -->
+    <button class="btn btn-xs btn-danger ml-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
 
+    <!-- Modal -->
+    <div id="deleteModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
-<!-- Delete -->
-<!-- Delete button - trigger modal -->
-<button class="btn btn-xs btn-danger ml-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+        <!-- Modal content-->
+        <div class="modal-content">
 
-<!-- Modal -->
-<div id="deleteModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+        <div class="modal-body">
+            <p>Do you really want to delte <strong><%= vehicle.brand %> <%= vehicle.model %></strong>?</p>
+        </div>
+        <div class="modal-footer">
+            <form class="inline" action="/vehicles/<%= vehicle._id %>?_method=DELETE" method="post">
+                <button class="btn btn-xs btn-danger">Yes</button>
+            </form>
+            <button type="button" class="btn btn-xs btn-primary ml-1" data-dismiss="modal">No</button>
+        </div>
+        </div>
 
-    <!-- Modal content-->
-    <div class="modal-content">
-
-      <div class="modal-body">
-        <p>Do you really want to delte <strong><%= vehicle.brand %> <%= vehicle.model %></strong>?</p>
-      </div>
-      <div class="modal-footer">
-        <form class="inline" action="/vehicles/<%= vehicle._id %>?_method=DELETE" method="post">
-            <button class="btn btn-xs btn-danger">Yes</button>
-        </form>
-        <button type="button" class="btn btn-xs btn-primary ml-1" data-dismiss="modal">No</button>
-      </div>
     </div>
+    </div>
+<% }else{ %> 
+    <!-- Remove for me -->
+    <button class="btn btn-xs btn-danger ml-1" data-toggle="modal" data-target="#removeModal">Remove</button>
 
-  </div>
-</div>
+    <!-- Modal -->
+    <div id="removeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+
+        <div class="modal-body">
+            <p>Do you really want to remove <strong><%= vehicle.brand %> <%= vehicle.model %></strong> from your account?</p>
+        </div>
+        <div class="modal-footer">
+            <form class="inline" action="/vehicles/<%= vehicle._id %>/drivers/<%= current_user._id %>?_method=delete" method="post">
+                <button class="btn btn-xs btn-danger">Yes</button>
+            </form>
+            <button type="button" class="btn btn-xs btn-primary ml-1" data-dismiss="modal">No</button>
+        </div>
+        </div>
+    </div>
+    </div>
+<% } %> 
          
 <%- include("../partials/footer") %> 
