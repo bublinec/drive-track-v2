@@ -2,7 +2,8 @@
 $(document).ready(function() {
   $('#dataTable').DataTable({
     "order": [[0, "desc"]],
-    "bInfo" : false
+    "bInfo" : false,
+    "language": {emptyTable: "Add ride using form above."}
   });
 });
 
@@ -12,7 +13,8 @@ $(document).ready(function() {
     "bInfo" : false,
     "searching": true,
     "bPaginate": false,
-    "lengthChange": false
+    "lengthChange": false,
+    "language": {emptyTable: "Click + in the header to add driver."}
   });
 });
 
@@ -23,7 +25,8 @@ $(document).ready(function() {
     "searching": true,
     "bPaginate": false,
     "lengthChange": false,
-    "pageLength": 5
+    "pageLength": 5,
+    "language": {emptyTable: "You have already added all drivers."}
   });
 });
 

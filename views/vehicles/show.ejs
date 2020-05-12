@@ -8,7 +8,7 @@
         <i class="fas fa-table mr-1"></i>
         Driving Record
         <span id="add_ride_button"><i class="fas fa-plus mt-2 mr-1 float-right" title="Add new ride"></i></span>
-        <span id="show_tools_button"><i class="fas fa-search mt-2 mr-3 float-right" title="Tools"></i></span> 
+        <span id="show_tools_button_dataTable"><i class="fas fa-search mt-2 mr-3 float-right" title="Tools"></i></span> 
     </div>
     
     <div class="card-body table-no-border rides_table">
@@ -87,7 +87,9 @@
                         <th class="d-none d-sm-block">From</th>
                         <th>To</th>
                         <th>Km</th>
-                        <th>Driver</th>
+                        <% if(vehicle.author.equals(current_user._id)){ %> 
+                            <th>Driver</th>
+                        <% } %> 
                         <th class="d-none d-sm-block">Round</th>
                     </tr>
                 </thead>
@@ -112,7 +114,9 @@
                                 <td class="d-none d-sm-block"><%= ride.from%> </td>
                                 <td><%= ride.to%> </td>
                                 <td><%= ride.distance %> </td>
-                                <td><%= ride.driver.username %></td>
+                                <% if(vehicle.author.equals(current_user._id)){ %> 
+                                    <td><%= ride.driver.username %></td>
+                                <% } %> 
                                 <td class="d-none d-sm-block">
                                     <% if(ride.round_trip){ %>
                                         <i class="fas fa-check"></i>
@@ -139,7 +143,7 @@
             <i class="fas fa-users mr-1"></i>
             Drivers
             <span id="add_ride_button"><i class="fas fa-plus mt-2 mr-1 float-right" title="Add driver" data-toggle="modal" data-target="#addDrverModal"></i></span>
-            <span id="show_tools_button"><i class="fas fa-search mt-2 mr-3 float-right" title="Tools"></i></span> 
+            <span id="show_tools_button_driversTable"><i class="fas fa-search mt-2 mr-3 float-right" title="Tools"></i></span> 
 
         </div>
         <div class="card-body table-no-border">    
@@ -151,7 +155,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% vehicle.drivers.forEach(driver => { %>
+                        <% vehicle.drivers.slice(1).forEach(driver => { %>
                         <tr>
                             <td>
                                 <%= driver.username %>

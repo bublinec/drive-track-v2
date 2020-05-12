@@ -3,8 +3,16 @@ body{
 }
 
 /* Add rides toggler */
-#add_ride_button, #show_tools_button{
-    font-size: x-large;
+#add_ride_button, 
+#show_tools_button_dataTable,
+#show_tools_button_driversTable{
+    font-size: 1.5rem;
+    width: 60px;
+}
+
+#show_tools_button_dataTable,
+#show_tools_button_driversTable{
+    font-size: 1.4rem;
     width: 60px;
 }
 
@@ -14,9 +22,11 @@ body{
 
 #add_ride_form{
     /* display: none; */
+    margin-top: 10px;
 }
 
-#dataTable_wrapper .row:first-child{
+#dataTable_wrapper .row:first-child,
+#driversTable_wrapper .row:first-child{
     display: none;
 }
 
@@ -30,11 +40,16 @@ body{
 }
 
 .table-no-border {
-    padding: 10px 0 0 0 !important;
+    padding: 0 !important;
+}
+
+#addDriversTable_wrapper .row:first-child{
+    margin-top: 8px;
 }
 
 #driversTable_wrapper .row .col-sm-12.col-md-6:first-child,
 #addDriversTable_wrapper .row .col-sm-12.col-md-6:first-child,
+#dataTable_wrapper .row .col-sm-12.col-md-6:first-child,
 #driversTable_wrapper thead,
 #addDriversTable_wrapper thead
 {
@@ -42,6 +57,7 @@ body{
 }
 
 #driversTable_wrapper .row .col-sm-12.col-md-6 label,
+#dataTable_wrapper .row .col-sm-12.col-md-6 label,
 #addDriversTable_wrapper .row .col-sm-12.col-md-6 label{ 
     float: left;
 }
@@ -51,9 +67,12 @@ body{
     max-width: 40vw !important;
 }
 
+.pagination{
+    margin: 7px !important;
+}
 
 table.dataTable{
-    margin-bottom: 0px !important;
+    margin: 0 0 !important;
 }
 
 

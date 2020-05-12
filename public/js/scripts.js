@@ -20,14 +20,18 @@
 // Toggle new ride form
 $("#add_ride_button").click(function(){
     $("#add_ride_form").toggle();
-    $(".table_button svg").css("display: inline");
 });
 
 // Toggle tools (using flex!) 
-$("#show_tools_button").click(function(){
-    $("#dataTable_wrapper .row:first-child").toggleClass("show px-3");
-
+$("#show_tools_button_dataTable").click(function(){
+    $("#dataTable_wrapper .row:first-child").toggleClass("show pt-2");
 });
+
+$("#show_tools_button_driversTable").click(function(){
+    $("#driversTable_wrapper .row:first-child").toggleClass("show pt-2");
+});
+
+$("#addDriversTable_wrapper .row:first-child").toggleClass("show pt-2");
 
 // Typed text
 var TxtType = function(el, toRotate, period) {
