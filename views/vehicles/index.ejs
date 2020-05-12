@@ -35,10 +35,16 @@
           <div class="card-body"><canvas id="vehiclesChart" width="100%" height="50"></canvas></div>
       </div>
     </div>
-    <div class="col-lg-6">
+    <!-- <div class="col-lg-6">
       <div class="card mb-4">
           <div class="card-header"><i class="fas fa-users mr-1"></i>Drivers</div>
           <div class="card-body"><canvas id="driversChart" width="100%" height="50"></canvas></div>
+      </div>
+    </div> -->
+    <div class="col-lg-6">
+      <div class="card mb-4">
+          <div class="card-header"><i class="fas fa-map-marked-alt mr-1"></i>Top destinations</div>
+          <div class="card-body"><canvas id="destinationsChart" width="100%" height="50"></canvas></div>
       </div>
     </div>
 </div>
@@ -88,6 +94,20 @@ function getDriversKm(rides){
     }
   })
   return drivers_km;
+}
+
+// return object (map/dict) with destination:km
+function getDestinationsKm(rides){
+  destinations_km = {};
+  rides.forEach(function(ride){
+    if(destinations_km[ride.to]){
+      destinations_km[ride.to] += ride.distance;
+    }
+    else{
+      destinations_km[ride.to] = ride.distance;
+    }
+  })
+  return destinations_km;
 }
 
 // return array of vehicles and km per vehicle
@@ -172,7 +192,7 @@ var user = <%- JSON.stringify(current_user) %>;
 var rides = getRides(user);
 var drive_by_months = getDriveByMonths(rides, 7);
 var drive_by_days = getDriveByDays(rides, 7);
-var drivers_km = getDriversKm(rides);
+var destinations_km = getDestinationsKm(rides);
 var km_per_vehicle = getVehiclesKm(user);
 
 
@@ -281,7 +301,7 @@ var myPieChart = new Chart(ctx, {
     labels: km_per_vehicle[0],
     datasets: [{
       data: km_per_vehicle[1],
-      backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+      backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', "#6f42c1", "#fd7e14", "#e83e8c", "#343a40", "#17a2b8"],
     }],
   },
   options: {
@@ -292,15 +312,15 @@ var myPieChart = new Chart(ctx, {
 });
 
 
-// DRIVERS PIE CHART
-var ctx = document.getElementById("driversChart");
+// Destinations PIE CHART
+var ctx = document.getElementById("destinationsChart");
 var myPieChart = new Chart(ctx, {
   type: 'pie',
   data: {
-    labels: Object.keys(drivers_km),
+    labels: Object.keys(destinations_km),
     datasets: [{
-      data: Object.values(drivers_km),
-      backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+      data: Object.values(destinations_km),
+      backgroundColor: ['#007bff', '#dc3545', '#28a745', '#ffc107', "#6f42c1", "#fd7e14", "#e83e8c", "#343a40", "#17a2b8"],
     }],
   },
   options: {
