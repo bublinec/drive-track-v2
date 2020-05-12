@@ -46,7 +46,8 @@ router.get("/login", function(req, res){
 router.post("/login", passport.authenticate("local", {
     // TO DO : FIGURE OUT THE FLASH MESSAGES
     successRedirect: "/vehicles",
-    failureRedirect: "/login"
+    failureRedirect: "/login",
+    failureFlash : true
 }));
 
 // log out
