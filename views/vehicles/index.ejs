@@ -72,9 +72,9 @@ Date.prototype.isSameMonthAs = function(pDate) {
 }
 
 // return two arrays: keys and values sorted by values
-Object.prototype.sort = function (){
-  var keys = Object.keys(this);
-  var values = Object.values(this);
+function sortObject(object){
+  var keys = Object.keys(object);
+  var values = Object.values(object);
   var sorted_keys = [];
   var sorted_values = [];
   for(var i=0;i < keys.length; i++){
@@ -209,7 +209,7 @@ var user = <%- JSON.stringify(current_user) %>;
 var rides = getRides(user);
 var drive_by_months = getDriveByMonths(rides, 7);
 var drive_by_days = getDriveByDays(rides, 7);
-var destinations_km = getDestinationsKm(rides).sort();
+var destinations_km = sortObject(getDestinationsKm(rides));
 
 var km_per_vehicle = getVehiclesKm(user);
 
