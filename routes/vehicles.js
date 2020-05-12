@@ -45,8 +45,6 @@ router.get("/:id", middleware.isLoggedIn, function(req, res){
     Vehicle.findById(req.params.id).populate("rides").populate("drivers").exec(function(err, found_vehicle){
         if(err){
             req.flash("error", err.message);
-            console.log("here");
-            
             res.redirect("back");
         }
         else{    

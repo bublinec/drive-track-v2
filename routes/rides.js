@@ -34,7 +34,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
         if(err){
             req.flash("error", err.message);
             res.redirect("back");
-        }
+        }        
         Ride.create(new_ride, function(err, created_ride){
             if(err){
                 req.flash("error", err.message);

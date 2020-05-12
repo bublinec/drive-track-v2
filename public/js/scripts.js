@@ -31,8 +31,6 @@ $("#show_tools_button_driversTable").click(function(){
     $("#driversTable_wrapper .row:first-child").toggleClass("show pt-2");
 });
 
-$("#addDriversTable_wrapper .row:first-child").toggleClass("show pt-2");
-
 // Typed text
 var TxtType = function(el, toRotate, period) {
     this.toRotate = toRotate;

@@ -45,7 +45,7 @@
                     </script>
                 </div>
                 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="ride[from]">From</label>
                     <input class="form-control py-2" type="text" name="ride[from]" value="Zvolen" required/>
                 </div>
@@ -55,15 +55,22 @@
                     <input class="form-control py-2" type="text" name="ride[to]" required/>
                 </div>
     
-                <div class="col-md-1">
-                    <label for="ride[distance]">Distance</label>
-                    <input class="form-control py-2" name="ride[distance]" type="number" required/>
+                <div class="col-md-2">
+                    <label for="mileage_after">Mileage after</label>
+                    <input class="form-control py-2" name="mileage_after" type="number" value="<%= vehicle.getCurrentMileage() %>"/>
                 </div>
 
-                <!-- <div class="col-md-2">
-                    <label for="ride[driver]">Driver</label>
-                    <input class="form-control py-2" name="ride[driver]" type="text" value="<%= current_user.username %> " required/>
-                </div> -->
+                <div class="col-md-2">
+                    <label for="ride[distance]">Distance</label>
+                    <input id="distance_input" class="form-control py-2" name="ride[distance]" type="number" required/>
+                </div>
+
+                <script>
+                    var current_mileage = <%- vehicle.getCurrentMileage() %>
+                    $("input[name=mileage_after]").on("change", function(){
+                        $("#distance_input").val($(this).val() - current_mileage)
+                    });
+                </script>
 
                 <div class="col-md-2">
                     <div class="custom-control custom-checkbox mt-2 mt-md-0 mb-2 mb-md-0">

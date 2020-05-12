@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 var vehicleSchema = new mongoose.Schema({
     brand: String,
     model: String,
-    mileage: Number,
+    initial_mileage: Number,
     rides: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -22,5 +22,13 @@ var vehicleSchema = new mongoose.Schema({
         ref: "User"
     }
 });
+
+vehicleSchema.methods.getCurrentMileage = function(){
+    current_mileage = this.initial_mileage;
+    this.rides.forEach(ride => {
+        current_mileage += ride.distance;
+    });
+    return current_mileage;
+}
 
 module.exports = mongoose.model("Vehicle", vehicleSchema);
