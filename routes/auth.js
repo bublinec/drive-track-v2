@@ -43,11 +43,22 @@ router.get("/login", function(req, res){
 });
 
 // login logic
-router.post("/login", passport.authenticate("local", {
-    // TO DO : FIGURE OUT THE FLASH MESSAGES
+router.post("/login", 
+function(req, res, next){
+    User.findOne({username:req.body.username}, function(err, found_user){
+        if(!found_user){
+            req.flash("error", "The user does not exist");
+            res.redirect("back");
+        }
+        else{
+            next();
+        }
+    })
+},
+passport.authenticate("local", {
     successRedirect: "/vehicles",
     failureRedirect: "/login",
-    failureFlash : true
+    failureFlash: 'The password is incorrect'
 }));
 
 // log out

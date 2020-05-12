@@ -13,5 +13,4 @@ MongoDB, Node.js (express, passport, mongoose), JQuery, Bootstrap
 - forgot password handling
 - automatic tracking using phone GPS location
 - use APIs for getting locations, showing maps, calculating distances etc.
-- creating connections between users
-- include mileage in recording
+- creating better connections between users
