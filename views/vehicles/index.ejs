@@ -71,6 +71,22 @@ Date.prototype.isSameMonthAs = function(pDate) {
   );
 }
 
+// return two arrays: keys and values sorted by values
+Object.prototype.sort = function (){
+  var keys = Object.keys(this);
+  var values = Object.values(this);
+  var sorted_keys = [];
+  var sorted_values = [];
+  for(var i=0;i < keys.length; i++){
+    var max_i = values.indexOf(Math.max(...values))
+    sorted_keys.push(keys[max_i])
+    sorted_values.push(values[max_i]);
+    values.splice(max_i, 1);
+  }
+  return [sorted_keys, sorted_values];
+}
+
+
 // return arr of all rides (most recent first)
 function getRides(user){
     var rides = [];
@@ -109,6 +125,7 @@ function getDestinationsKm(rides){
   })
   return destinations_km;
 }
+
 
 // return array of vehicles and km per vehicle
 function getVehiclesKm(user){
@@ -170,8 +187,6 @@ function getDriveByDays(rides, n=7){
     return [days, drive_by_days];
 };
 
-
-// get actual data for the current user
 $("#monthsInput").on("change", function() {
   var months = $(this).val();
   var drive_by_months = getDriveByMonths(rides, months);
@@ -188,11 +203,14 @@ $("#daysInput").on("change", function() {
   driveByDayChart.update();   
 });
 
+
+// get data for the current user
 var user = <%- JSON.stringify(current_user) %>;
 var rides = getRides(user);
 var drive_by_months = getDriveByMonths(rides, 7);
 var drive_by_days = getDriveByDays(rides, 7);
-var destinations_km = getDestinationsKm(rides);
+var destinations_km = getDestinationsKm(rides).sort();
+
 var km_per_vehicle = getVehiclesKm(user);
 
 
@@ -298,9 +316,9 @@ var ctx = document.getElementById("vehiclesChart");
 var myPieChart = new Chart(ctx, {
   type: 'pie',
   data: {
-    labels: km_per_vehicle[0],
+    labels: km_per_vehicle[0].slice(0,10),
     datasets: [{
-      data: km_per_vehicle[1],
+      data: km_per_vehicle[1].slice(0,10),
       backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745', "#6f42c1", "#fd7e14", "#e83e8c", "#343a40", "#17a2b8"],
     }],
   },
@@ -317,9 +335,9 @@ var ctx = document.getElementById("destinationsChart");
 var myPieChart = new Chart(ctx, {
   type: 'pie',
   data: {
-    labels: Object.keys(destinations_km),
+    labels: destinations_km[0].slice(0,10),
     datasets: [{
-      data: Object.values(destinations_km),
+      data: destinations_km[1].slice(0,10),
       backgroundColor: ['#007bff', '#dc3545', '#28a745', '#ffc107', "#6f42c1", "#fd7e14", "#e83e8c", "#343a40", "#17a2b8"],
     }],
   },

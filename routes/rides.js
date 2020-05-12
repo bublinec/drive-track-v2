@@ -8,7 +8,6 @@ const express = require("express"),
 
 // index - form is shown on the vehcile show route
 
-
 // create
 router.post("/", middleware.isLoggedIn, function(req, res){
     var new_ride = req.body.ride;
