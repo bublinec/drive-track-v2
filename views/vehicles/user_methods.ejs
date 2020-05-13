@@ -1,0 +1,177 @@
+<script>
+// FUNCTIONS
+// return true if two dates are the same day
+Date.prototype.isSameDateAs = function(pDate) {
+  return (
+    this.getFullYear() === pDate.getFullYear() &&
+    this.getMonth() === pDate.getMonth() &&
+    this.getDate() === pDate.getDate()
+  );
+}
+
+// return true if two dates are in the same month
+Date.prototype.isSameMonthAs = function(pDate) {
+  return (
+    this.getFullYear() === pDate.getFullYear() &&
+    this.getMonth() === pDate.getMonth()
+  );
+}
+
+// return two arrays: keys and values sorted by values
+// Object.prototype.sort definition seems to cause problems!
+function sortObject(object){
+  var keys = Object.keys(object);
+  var values = Object.values(object);
+  var sorted_keys = [];
+  var sorted_values = [];
+  for(var i=0;i < keys.length; i++){
+    var max_i = values.indexOf(Math.max(...values))
+    sorted_keys.push(keys[max_i])
+    sorted_values.push(values[max_i]);
+    values.splice(max_i, 1);
+  }
+  return [sorted_keys, sorted_values];
+}
+
+// GET CURRENT USER
+var user = <%- JSON.stringify(current_user) %>;
+
+// ADD METHODS
+
+// return (map/dict) vehicle:rides
+user.getRidesByVehicle = function(){
+    rides_by_vehicle = {}
+    var rides;
+    this.my_vehicles.forEach(function(vehicle){
+        rides = []
+        vehicle.rides.forEach(function(ride){
+            rides.push(ride);
+        });
+        vehicle_name = vehicle.brand + " " + vehicle.model;
+        rides_by_vehicle[vehicle_name] = rides.reverse();
+    });
+    return rides_by_vehicle;
+};
+
+user.getAllRides = function(rides_by_vehicle){
+  return [].concat.apply([], Object.values(rides_by_vehicle));
+}
+
+// return object (map/dict)  driver:km
+user.getDriversKm = function(rides){
+  drivers_km = {};
+  rides.forEach(function(ride){
+    if(drivers_km[ride.driver]){
+      drivers_km[ride.driver] += ride.distance;
+    }
+    else{
+      drivers_km[ride.driver] = ride.distance;
+    }
+  })
+  return drivers_km;
+}
+
+// return object (map/dict) with destination:km
+user.getDestinationsKm = function(rides){
+  destinations_km = {};
+  rides.forEach(function(ride){
+    if(destinations_km[ride.to]){
+      destinations_km[ride.to] += ride.distance;
+    }
+    else{
+      destinations_km[ride.to] = ride.distance;
+    }
+  })
+  return destinations_km;
+}
+
+// return object (map/dict) with destination:km
+user.getDestinationsNumberOfRides = function(rides){
+  destinations_ride_number = {};
+  rides.forEach(function(ride){
+    if(destinations_ride_number[ride.to]){
+      destinations_ride_number[ride.to] += 1;
+    }
+    else{
+      destinations_ride_number[ride.to] = 1;
+    }
+  })
+  return destinations_ride_number;
+}
+
+// return array of vehicles and km per vehicle
+user.getVehiclesKm = function(){
+  vehicles = [];
+  km_per_vehicle = [];
+  user.my_vehicles.forEach(function(vehicle){
+        km = 0
+        vehicle.rides.forEach(function(ride){
+            km += ride.distance;
+        });
+        vehicles.push(vehicle.brand + " " + vehicle.model)
+        km_per_vehicle.push(km)
+      });
+  return [vehicles, km_per_vehicle]
+}
+
+// return array of vehicles and number of rides per vehicle
+user.getVehiclesNumberOfRides = function(){
+  vehicles = [];
+  rides_per_vehicle = [];
+  user.my_vehicles.forEach(function(vehicle){
+        rides = 0
+        vehicle.rides.forEach(function(ride){
+            rides += 1;
+        });
+        vehicles.push(vehicle.brand + " " + vehicle.model)
+        rides_per_vehicle.push(rides)
+      });
+  return [vehicles, rides_per_vehicle]
+}
+
+// return array of last n months and distance driven
+user.getDriveByMonths = function(rides, n=6){
+    var month_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var months = [];
+    var drive_by_months = [];
+    var today = new Date();
+    var compared_date, ride_date, distance;
+
+    for(var i = n-1; i >= 0; i -= 1){
+        distance = 0;
+        compared_date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+        rides.forEach(function(ride){
+            ride_date = new Date(ride.date);
+            if(ride_date.isSameMonthAs(compared_date)){
+                distance += ride.distance
+            }   
+        });
+        months.push(month_names[compared_date.getMonth()]);
+        drive_by_months.push(distance);
+    }
+    return [months, drive_by_months];
+};
+
+// return array of last n days and distance driven
+user.getDriveByDays = function(rides, n=7){
+    var days = [];
+    var drive_by_days = [];
+    var today = new Date();
+    var compared_date, ride_date, distance;
+
+    for(var i = n-1; i >= 0; i -= 1){
+        distance = 0;
+        compared_date = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
+        rides.forEach(function(ride){
+            ride_date = new Date(ride.date);
+            if(ride_date.isSameDateAs(compared_date)){
+                distance += ride.distance
+            }   
+        });
+        days.push(compared_date.getDate().toString() + "." + (compared_date.getMonth() + 1).toString() + ".");
+        drive_by_days.push(distance);
+    }
+    return [days, drive_by_days];
+};
+
+</script>
