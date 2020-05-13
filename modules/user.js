@@ -17,7 +17,6 @@ var userSchema = new mongoose.Schema({
             ref: "Vehicle"
         }
     ]
-
 });
 
 userSchema.methods.isTheSameUser = function (user){

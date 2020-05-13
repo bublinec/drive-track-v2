@@ -61,14 +61,28 @@ user.getAllRides = function(rides_by_vehicle){
 user.getDriversKm = function(rides){
   drivers_km = {};
   rides.forEach(function(ride){
-    if(drivers_km[ride.driver]){
-      drivers_km[ride.driver] += ride.distance;
+    if(drivers_km[ride.driver.username]){
+      drivers_km[ride.driver.username] += ride.distance;
     }
     else{
-      drivers_km[ride.driver] = ride.distance;
+      drivers_km[ride.driver.username] = ride.distance;
     }
   })
   return drivers_km;
+}
+
+// return object (map/dict)  driver:number of rides
+user.getDriversNumberOfRides = function(rides){
+  drivers_num_of_rides = {};
+  rides.forEach(function(ride){
+    if(drivers_num_of_rides[ride.driver.username]){
+      drivers_num_of_rides[ride.driver.username] += 1;
+    }
+    else{
+      drivers_num_of_rides[ride.driver.username] = 1;
+    }
+  })
+  return drivers_num_of_rides;
 }
 
 // return object (map/dict) with destination:km

@@ -5,7 +5,7 @@
         <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Drive per day</div>
         <div class="card-body">
             <canvas id="driveByDayChart" width="100%" height="40"></canvas>
-            <div class="pt-3 pl-2">
+            <div class="pt-2 pl-2">
               <span>Show</span>
               <input class="form-control form-control-sm col-4 col-sm-3 col-md-2 d-inline" id="daysInput" name="days" type="number" value="7" required/>
               <span>days</span>
@@ -18,7 +18,7 @@
         <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Drive by months</div>
         <div class="card-body">
           <canvas id="driveByMonthChart" width="100%" height="40"></canvas>
-          <div class="pt-3 pl-2">
+          <div class="pt-2 pl-2">
             <span>Show</span>
             <input class="form-control form-control-sm col-4 col-sm-3 col-md-2 d-inline" id="monthsInput" name="months" type="number" value="7" required/>
             <span>months</span>
@@ -35,21 +35,27 @@
       </div>
   </div>
 </div>
-<!-- <div class="col-lg-6">
-  <div class="card mb-4">
-      <div class="card-header"><i class="fas fa-users mr-1"></i>Drivers</div>
-      <div class="card-body"><canvas id="driversChart" width="100%" height="50"></canvas></div>
-  </div>
-</div> -->
+
+
 <div class="col-lg-6">
-  <div class="card mb-4">
-      <div class="card-header"><i class="fas fa-map-marked-alt mr-1"></i>Top destinations</div>
-      <div class="card-body"><canvas id="destinationsChart" width="100%" height="50"></canvas></div>
-      <div class="pb-3 pl-3">
-        <input id="destinationsChartToggler" type="checkbox" checked data-toggle="toggle" data-on="Distance" data-off="Frequency" data-onstyle="primary" data-offstyle="danger">
-      </div>
+    <div class="card mb-4">
+        <div class="card-header"><i class="fas fa-users mr-1"></i>Drivers</div>
+        <div class="card-body"><canvas id="driversChart" width="100%" height="50"></canvas></div>
+        <div class="pb-3 pl-3">
+            <input id="driversChartToggler" type="checkbox" checked data-toggle="toggle" data-on="Distance" data-off="Frequency" data-onstyle="primary" data-offstyle="danger">
+        </div>
+    </div>
   </div>
-</div>
+
+  <div class="col-lg-12">
+    <div class="card mb-4">
+        <div class="card-header"><i class="fas fa-map-marked-alt mr-1"></i>Top destinations</div>
+        <div class="card-body"><canvas id="destinationsChart" width="100%" height="50"></canvas></div>
+        <div class="pb-3 pl-3">
+          <input id="destinationsChartToggler" type="checkbox" checked data-toggle="toggle" data-on="Distance" data-off="Frequency" data-onstyle="primary" data-offstyle="danger">
+        </div>
+    </div>
+  </div>
 
 <script>
 
@@ -57,14 +63,22 @@
 // GET DATA
 // *****************************************
 
+// basic
 var rides_by_vehicle = user.getRidesByVehicle();
 var all_rides = user.getAllRides(rides_by_vehicle);
 var vehicles = Object.keys(rides_by_vehicle);
 
-var destinations_km = sortObject(user.getDestinationsKm(all_rides));
+// vehicles
 var km_per_vehicle = user.getVehiclesKm();
 var number_of_rides_per_vehicle = user.getVehiclesNumberOfRides();
+
+// destinations
+var km_per_destination = sortObject(user.getDestinationsKm(all_rides));
 var number_of_rides_per_destination =sortObject(user.getDestinationsNumberOfRides(all_rides));
+
+// drivers
+var km_per_driver = sortObject(user.getDriversKm(all_rides));
+var number_of_rides_per_driver = sortObject(user.getDriversNumberOfRides(all_rides));
 
 
 // ************************************************
@@ -194,14 +208,32 @@ var vehiclesPieChart = new Chart(ctx, {
     }
 });
 
+// Drivers PIE CHART
+var ctx = document.getElementById("driversChart");
+var driversPieChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+    labels: km_per_driver[0].slice(0,10),
+    datasets: [{
+        data: km_per_driver[1].slice(0,10),
+        backgroundColor: colors,
+    }],
+    },
+    options: {
+    legend: {
+        display: false
+    }
+    }
+});
+
 // Destinations PIE CHART
 var ctx = document.getElementById("destinationsChart");
 var destinationsPieChart = new Chart(ctx, {
     type: 'pie',
     data: {
-    labels: destinations_km[0].slice(0,10),
+    labels: km_per_destination[0].slice(0,10),
     datasets: [{
-        data: destinations_km[1].slice(0,10),
+        data: km_per_destination[1].slice(0,10),
         backgroundColor: colors,
     }],
     },
@@ -279,11 +311,26 @@ $("#destinationsChartToggler").on("change", function() {
         destinationsPieChart.data.datasets[0].data = number_of_rides_per_destination[1].slice(0,10);
     }
     else{
-        destinationsPieChart.data.labels = destinations_km[0].slice(0,10);
-        destinationsPieChart.data.datasets[0].data = destinations_km[1].slice(0,10);
+        destinationsPieChart.data.labels = km_per_destination[0].slice(0,10);
+        destinationsPieChart.data.datasets[0].data = km_per_destination[1].slice(0,10);
     }
     destinationsPieChart.update();
 });
+
+// listen to freqency/distance change drivers
+$("#driversChartToggler").on("change", function() {
+    var checked = $(this).prop("checked");
+    if(!checked){
+        driversPieChart.data.labels = number_of_rides_per_driver[0].slice(0,10);
+        driversPieChart.data.datasets[0].data = number_of_rides_per_driver[1].slice(0,10);
+    }
+    else{
+        driversPieChart.data.labels = km_per_driver[0].slice(0,10);
+        driversPieChart.data.datasets[0].data = km_per_driver[1].slice(0,10);
+    }
+    driversPieChart.update();
+});
+
 
 </script>
     
