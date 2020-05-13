@@ -56,7 +56,7 @@ function(req, res, next){
     })
 },
 passport.authenticate("local", {
-    successRedirect: "/vehicles",
+    successRedirect: "dashboard/my_vehicles",
     failureRedirect: "/login",
     failureFlash: 'The password is incorrect'
 }));

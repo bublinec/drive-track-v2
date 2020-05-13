@@ -1,0 +1,213 @@
+<%- include("user_methods") %>
+
+<div class="col-lg-6">
+    <div class="card mb-3">
+        <div class="card-header"><i class="fas fa-chart-area mr-1"></i>Drive per day</div>
+        <div class="card-body">
+            <canvas id="driveByDayChart" width="100%" height="40"></canvas>
+            <div class="pt-2 pl-2">
+              <span>Show</span>
+              <input class="form-control form-control-sm col-4 col-sm-3 col-md-2 d-inline" id="daysInput" name="days" type="number" value="7" required/>
+              <span>days</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-6">
+    <div class="card mb-3">
+        <div class="card-header"><i class="fas fa-chart-bar mr-1"></i>Drive by months</div>
+        <div class="card-body">
+          <canvas id="driveByMonthChart" width="100%" height="40"></canvas>
+          <div class="pt-2 pl-2">
+            <span>Show</span>
+            <input class="form-control form-control-sm col-4 col-sm-3 col-md-2 d-inline" id="monthsInput" name="months" type="number" value="7" required/>
+            <span>months</span>
+          </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-lg-12">
+<div class="card mb-3">
+    <div class="card-header"><i class="fas fa-map-marked-alt mr-1"></i>Top destinations</div>
+    <div class="card-body"><canvas id="destinationsChart" width="100%" height="50"></canvas></div>
+    <div class="pb-3 pl-3">
+        <input id="destinationsChartToggler" type="checkbox" checked data-toggle="toggle" data-on="Distance" data-off="Frequency" data-onstyle="primary" data-offstyle="danger">
+    </div>
+</div>
+</div>
+
+<script>
+
+// *****************************************
+// GET DATA
+// *****************************************
+
+// basic
+var all_rides = <%- JSON.stringify(current_user_rides) %>;
+console.log(all_rides);
+
+// drive by days/month
+drive_by_days = user.getDriveByDays(all_rides);
+drive_by_month = user.getDriveByMonths(all_rides);
+
+// destinations
+var km_per_destination = sortObject(user.getDestinationsKm(all_rides));
+var number_of_rides_per_destination =sortObject(user.getDestinationsNumberOfRides(all_rides));
+
+
+// ************************************************
+// CHARTS CONFIG
+// ************************************************
+
+// Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#292b2c';
+var colors = ['#007bff', '#dc3545', '#ffc107', '#28a745', "#6f42c1", "#fd7e14", "#e83e8c", "#343a40", "#17a2b8"];
+
+// DRIVE BY DAY AREA CHART
+var ctx = document.getElementById("driveByDayChart");
+var driveByDayChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+    labels: drive_by_days[0],
+    datasets: [{
+        data: drive_by_days[1],
+        label: "Km",
+        lineTension: 0.3,
+        backgroundColor: colors[0] + "33",
+        borderColor: colors[0],
+        pointRadius: 5,
+        pointBackgroundColor: colors[0],
+        pointBorderColor: "rgba(255,255,255,0.8)",
+        pointHoverRadius: 6,
+        pointHoverBackgroundColor: colors[0],
+        pointHitRadius: 50,
+        pointBorderWidth: 2,
+    }],
+    },
+    options: {
+    scales: {
+        xAxes: [{
+        time: {
+            unit: 'date'
+        },
+        gridLines: {
+            display: false
+        },
+        }],
+        yAxes: [{
+        ticks: {
+            min: 0,
+            maxTicksLimit: 5
+        },
+        gridLines: {
+            color: "rgba(0, 0, 0, .125)",
+        }
+        }],
+    },
+    legend: {
+        display: false
+    }
+    }
+});
+
+// DRIVE BY MONTH BAR CHART
+var ctx = document.getElementById("driveByMonthChart");
+var driveByMonthChart = new Chart(ctx, {
+type: 'bar',
+data: {
+    labels: drive_by_month[0],
+    datasets: [{
+        data: drive_by_month[1],
+        borderColor: "rgba(2,117,216,1)",
+        backgroundColor: colors[0],
+        label: "Km"
+    }]
+},
+options: {
+    scales: {
+    xAxes: [{
+        time: {
+        unit: 'month'
+        },
+        gridLines: {
+        display: false
+        },
+        stacked: true
+    }],
+    yAxes: [{
+        ticks: {
+            min: 0,
+            maxTicksLimit: 5
+        },
+        gridLines: {
+        display: true
+        },
+        stacked: true
+    }],
+    },
+    legend: {
+        display: false
+    }
+    }
+});
+
+// Destinations PIE CHART
+var ctx = document.getElementById("destinationsChart");
+var destinationsPieChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+    labels: km_per_destination[0].slice(0,10),
+    datasets: [{
+        data: km_per_destination[1].slice(0,10),
+        backgroundColor: colors,
+    }],
+    },
+    options: {
+    legend: {
+        display: false
+    }
+    }
+});
+
+
+// *****************************************
+// EVENT LISTENERS - to make charts dynamic
+// *****************************************
+
+// listen to months change
+$("#monthsInput").on("change", function() {
+    var months = $(this).val();
+    drive_by_month = user.getDriveByMonths(all_rides, months);
+    driveByMonthChart.data.labels = drive_by_month[0];
+    driveByMonthChart.data.datasets[0].data = drive_by_month[1];
+    driveByMonthChart.update();    
+});
+
+// listen to days change
+$("#daysInput").on("change", function() {
+    var days = $(this).val();
+    drive_by_day = user.getDriveByDays(all_rides, days);
+    driveByDayChart.data.labels = drive_by_day[0];
+    driveByDayChart.data.datasets[0].data = drive_by_day[1];
+    driveByDayChart.update();    
+});
+
+// listen to freqency/distance change destinations
+$("#destinationsChartToggler").on("change", function() {
+    var checked = $(this).prop("checked");
+    if(!checked){
+        destinationsPieChart.data.labels = number_of_rides_per_destination[0].slice(0,10);
+        destinationsPieChart.data.datasets[0].data = number_of_rides_per_destination[1].slice(0,10);
+    }
+    else{
+        destinationsPieChart.data.labels = km_per_destination[0].slice(0,10);
+        destinationsPieChart.data.datasets[0].data = km_per_destination[1].slice(0,10);
+    }
+    destinationsPieChart.update();
+});
+
+</script>

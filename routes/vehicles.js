@@ -9,10 +9,6 @@ const express = require("express"),
 
 
 // index - all cars are displayed ALSO on the side nav
-// index = dashboard
-router.get("/", middleware.isLoggedIn, function(req, res){
-    res.render("vehicles/index");
-})
 
 // new - form is displayed using modal
 
@@ -41,13 +37,14 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 
 // show
 router.get("/:id", middleware.isLoggedIn, function(req, res){
-    // find the pond with provided id
+    // find the vehicle with provided id
     Vehicle.findById(req.params.id).populate("rides").populate("drivers").exec(function(err, found_vehicle){
         if(err){
             req.flash("error", err.message);
             res.redirect("back");
         }
-        else{    
+        else{
+            // find users that are not drivers yet (don't know how to query it)   
             User.find({}, function(err, users){
                 if(err){
                     req.flash("error", err.message);
@@ -60,11 +57,11 @@ router.get("/:id", middleware.isLoggedIn, function(req, res){
                             if(!(req.user._id.equals(user._id)))
                                 users_not_drivers.push(user);
                         });
-                    // render the show page
-                    res.render("vehicles/show", {
-                        vehicle: found_vehicle,
-                        users: users_not_drivers
-                    });
+                        // render the show page
+                        res.render("vehicles/show", {
+                            vehicle: found_vehicle,
+                            users: users_not_drivers
+                        });
                 }
             });
         }

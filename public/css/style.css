@@ -30,10 +30,6 @@ body{
     display: none;
 }
 
-.show{
-    display: flex !important;
-}
-
 #add_ride_form label{
     margin-bottom: 0;
     font-size: 0.95rem;
@@ -107,13 +103,12 @@ tr:hover .table_button svg{
     display: inline;
 }
 
-/* Delete vehicle */
-.inline{
-    display: inline;
+/* Toggler button - dashboard pie chart */
+.toggle-off.btn {
+    padding-left: 0;
 }
 
 /* Scrollbar */
-
 html {
     scrollbar-face-color: #212529;
     scrollbar-base-color: #212529;

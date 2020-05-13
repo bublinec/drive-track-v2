@@ -13,7 +13,7 @@
     
     <div class="card-body table-no-border rides_table">
         <form id="add_ride_form" action="/vehicles/<%= vehicle._id %>/rides" method="post">
-            <div class="form-row mb-4 mx-2">
+            <div class="form-row mb-3 mx-2">
                 <div class="col-md-3">
                     <label for="ride[date]">Date</label>
                         <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
@@ -317,7 +317,7 @@
             <p>Do you really want to remove <strong><%= vehicle.brand %> <%= vehicle.model %></strong> from your account?</p>
         </div>
         <div class="modal-footer">
-            <form class="inline" action="/vehicles/<%= vehicle._id %>/drivers/<%= current_user._id %>?_method=delete" method="post">
+            <form class="d-inline" action="/vehicles/<%= vehicle._id %>/drivers/<%= current_user._id %>?_method=delete" method="post">
                 <button class="btn btn-xs btn-danger">Yes</button>
             </form>
             <button type="button" class="btn btn-xs btn-primary ml-1" data-dismiss="modal">No</button>

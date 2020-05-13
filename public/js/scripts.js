@@ -24,11 +24,11 @@ $("#add_ride_button").click(function(){
 
 // Toggle tools (using flex!) 
 $("#show_tools_button_dataTable").click(function(){
-    $("#dataTable_wrapper .row:first-child").toggleClass("show pt-2");
+    $("#dataTable_wrapper .row:first-child").toggleClass("d-flex pt-2");
 });
 
 $("#show_tools_button_driversTable").click(function(){
-    $("#driversTable_wrapper .row:first-child").toggleClass("show pt-2");
+    $("#driversTable_wrapper .row:first-child").toggleClass("d-flex pt-2");
 });
 
 // Typed text
