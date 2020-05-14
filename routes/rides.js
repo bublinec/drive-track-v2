@@ -9,13 +9,12 @@ const express = require("express"),
 // index - form is shown on the vehcile show route
 
 // create
-router.post("/", middleware.isLoggedIn, function(req, res){
+router.post("/", middleware.isLoggedIn, middleware.isDriver, function(req, res){
     var new_ride = req.body.ride;
     // get date from string in the input
     var input_arr = req.body.date_input.split(".");
     date_str= input_arr[1] + "/" + input_arr[0] + "/" + input_arr[2];
     new_ride.date = new Date(date_str);
-    
     // get round trip checkbox
     if(req.body.round_trip == "on"){
         new_ride.round_trip = true;
@@ -51,7 +50,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 });
 
 // destroy
-router.delete("/:ride_id", middleware.isLoggedIn, function(req, res){
+router.delete("/:ride_id", middleware.isLoggedIn, middleware.isDriver, function(req, res){
     // remove references from vehicle
     Vehicle.findById(req.params.id, function(err, found_vehicle){
         if(err){
@@ -73,7 +72,6 @@ router.delete("/:ride_id", middleware.isLoggedIn, function(req, res){
     // redirect
     res.redirect("/vehicles/" + req.params.id);
 });
-
 
 
 module.exports = router;

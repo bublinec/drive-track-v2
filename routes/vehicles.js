@@ -8,13 +8,13 @@ const express = require("express"),
       middleware = require("../middleware");
 
 
-// index - all cars are displayed ALSO on the side nav
+// index - all cars are displayed on the side nav
 
 // new - form is displayed using modal
 
 // create
 router.post("/", middleware.isLoggedIn, function(req, res){ 
-    // create pond and save it to db
+    // create vehicle and save it to db
     vehicle = req.body.vehicle;
     vehicle.author = req.user._id;
     vehicle.drivers = [req.user._id];
@@ -26,8 +26,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
         else{
             req.user.my_vehicles.push(created_vehicle);
             req.user.save();
-            console.log("\nCreated vehicle:\n", created_vehicle);
-            // redirect to ponds page with a success flash message
+            // redirect to vehicles page with a success flash message
             req.flash("success", created_vehicle.brand + " " + created_vehicle.model + " has been added to your account!");
             res.redirect("/vehicles/" + created_vehicle._id);
         }
@@ -36,7 +35,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 
 
 // show
-router.get("/:id", middleware.isLoggedIn, function(req, res){
+router.get("/:id", middleware.isLoggedIn, middleware.isDriver, function(req, res){
     // find the vehicle with provided id
     Vehicle.findById(req.params.id).populate("rides").populate("drivers").exec(function(err, found_vehicle){
         if(err){
@@ -51,7 +50,7 @@ router.get("/:id", middleware.isLoggedIn, function(req, res){
                     res.redirect("back");
                 }
                 else{
-                    users_not_drivers = []
+                    users_not_drivers = [];
                     users.forEach(user => {
                         if(!(user.isAmong(found_vehicle.drivers)))
                             if(!(req.user._id.equals(user._id)))
@@ -71,7 +70,7 @@ router.get("/:id", middleware.isLoggedIn, function(req, res){
 // edit - form is displayed using modal
 
 // update (where form submits to)
-router.put("/:id", middleware.isLoggedIn, function(req, res){
+router.put("/:id", middleware.isLoggedIn, middleware.isAuthor, function(req, res){
     // find and update the vehicle
     Vehicle.findByIdAndUpdate(req.params.id, req.body.vehicle, function(err){
         if(err){
@@ -87,7 +86,7 @@ router.put("/:id", middleware.isLoggedIn, function(req, res){
 });
 
 // destroy
-router.delete("/:id", middleware.isLoggedIn, function(req, res){
+router.delete("/:id", middleware.isLoggedIn, middleware.isAuthor,  function(req, res){
     // remove reference from user object
     req.user.my_vehicles.remove(mongoose.Types.ObjectId(req.params.id));
     req.user.save();
@@ -128,7 +127,7 @@ router.delete("/:id", middleware.isLoggedIn, function(req, res){
 });
 
 // add driver
-router.post("/:id/drivers/:driver_id", middleware.isLoggedIn, function(req, res){
+router.post("/:id/drivers/:driver_id", middleware.isLoggedIn, middleware.isAuthor, function(req, res){
     Vehicle.findById(req.params.id, function(err, found_vehicle){
         if(err){
             req.flash("error", err.message);
@@ -157,7 +156,7 @@ router.post("/:id/drivers/:driver_id", middleware.isLoggedIn, function(req, res)
 
 
 // remove driver
-router.delete("/:id/drivers/:driver_id", middleware.isLoggedIn, function(req, res){
+router.delete("/:id/drivers/:driver_id", middleware.isLoggedIn, middleware.isAuthor, function(req, res){
     Vehicle.findById(req.params.id, function(err, found_vehicle){
         if(err){
             req.flash("error", err.message);
@@ -178,7 +177,7 @@ router.delete("/:id/drivers/:driver_id", middleware.isLoggedIn, function(req, re
                     found_user.save();
                     if(req.user._id.equals(found_user._id)){
                         req.flash("success", "Vehicle removed from your account!");
-                        res.redirect("/vehicles");
+                        res.redirect("/dashboard/my_vehicles");
                     }
                     else{
                         req.flash("success", "Driver removed!");

@@ -4,17 +4,17 @@ const express = require("express"),
       middleware = require("../middleware"),
       Ride = require("../modules/ride");
       
-
-// ROUTES
+// landing page
 router.get("/", function(req, res){
     if(req.isAuthenticated()){
-        res.redirect("/vehicles");
+        res.redirect("dashboard/my_vehicles");
     }
     else{
         res.render("landing");
     }
 })
 
+// dashboard routes
 router.get("/dashboard/my_vehicles", middleware.isLoggedIn, function(req, res){
     res.render("dashboard/my_vehicles");
 });

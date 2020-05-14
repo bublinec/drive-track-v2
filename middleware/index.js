@@ -12,5 +12,45 @@ middlewareObj.isLoggedIn = function(req, res, next){
     res.redirect("/login");
 }
 
+middlewareObj.isAuthor = function (req, res, next){
+    Vehicle.findById(req.params.id, function(err, found_vehicle){
+        if(err){
+            req.flash("error", "Vehicle not found!");
+            res.redirect("back");
+        }
+        else{
+            // if current user owns the vehicle continue to next
+            if(req.user.isTheSameUser(found_vehicle.author)){
+                next();
+            }
+            // else redirect back with a error flash
+            else{
+                req.flash("error", "Permission denied!");
+                res.redirect("back");
+            }
+        }
+    });
+}
+
+middlewareObj.isDriver = function (req, res, next){
+    Vehicle.findById(req.params.id, function(err, found_vehicle){
+        if(err){
+            req.flash("error", "Vehicle not found!");
+            res.redirect("back");
+        }
+        else{
+            // if current user is among drivers
+            if(req.user.isAmong(found_vehicle.drivers)){
+                next();
+            }
+            // else redirect back with a error flash
+            else{
+                req.flash("error", "Permission denied!");
+                res.redirect("/dashboard/my_vehicles");
+            }
+        }
+    });
+}
+
 
 module.exports = middlewareObj;

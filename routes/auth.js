@@ -30,9 +30,9 @@ router.post("/register", function(req, res){
         }
         // if successfully create a user, then login and redirect
         passport.authenticate("local")(req, res, function(){
-            welcome_message = "Welcome " + req.body.username + "! On this page you will see your driving data. Tap 'Vehicles' on the side bar to add new vehicle and add your first ride!"
+            welcome_message = "Welcome " + req.body.username + "! On this page you will see your driving data. Click 'Vehicles' on the side bar to add new vehicle."
             req.flash("success", welcome_message);
-            res.redirect("/vehicles");
+            res.redirect("dashboard_vehicles");
         });
     });
 });
@@ -44,6 +44,7 @@ router.get("/login", function(req, res){
 
 // login logic
 router.post("/login", 
+// check if the user exists
 function(req, res, next){
     User.findOne({username:req.body.username}, function(err, found_user){
         if(!found_user){

@@ -16,12 +16,6 @@ var userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Vehicle"
         }
-    ],
-    rides: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Ride"
-        }
     ]
 });
 
