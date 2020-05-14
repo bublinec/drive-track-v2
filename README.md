@@ -1,6 +1,7 @@
 # DriveTrack
+Online driving log book
 
-### Everything your company needs to keep track of driving date and vehicles
+### Everything you nee to track driving
 
 ### Technology Stack
 MongoDB, Node.js (express, passport, mongoose), JQuery, Bootstrap

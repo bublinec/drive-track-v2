@@ -84,8 +84,9 @@ app.use(function(req, res, next){
 // Routes
 app.use("/vehicles", vehicleRoutes);
 app.use("/vehicles/:id/rides", rideRoutes);
-app.use("/", indexRoutes);
 app.use("/", authRoutes);
+app.use("/", indexRoutes);
+
 
 // Start server
 const port = process.env.PORT || 3000; 

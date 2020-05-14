@@ -143,15 +143,15 @@
     </div>
 </div>
 
+<!-- SHOW ONLY TO AUHTOR: -->
+<!-- DRIVERS -->
 <% if(vehicle.author.equals(current_user._id)){ %> 
-    <!-- DRIVERS -->
     <div class="card mb-4 mt-4">
         <div class="card-header">
             <i class="fas fa-users mr-1"></i>
             Drivers
             <span id="add_ride_button"><i class="fas fa-plus mt-2 mr-1 float-right" title="Add driver" data-toggle="modal" data-target="#addDrverModal"></i></span>
             <span id="show_tools_button_driversTable"><i class="fas fa-search mt-2 mr-3 float-right" title="Tools"></i></span> 
-
         </div>
         <div class="card-body table-no-border">    
             <div class="table-responsive">
@@ -177,112 +177,102 @@
             </div>
         </div>
     </div>
-<% } %> 
 
-<!-- Add driver -->
-<!-- Modal -->
-<div id="addDrverModal" class="modal fade" role="dialog">
-  <div class="modal-dialog w-75">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-
-      <div class="modal-body">
-        <p>Add driver to <strong><%= vehicle.brand %> <%= vehicle.model %></strong>:</p>
-        <div class="card mb-4 mt-4">
-            <div class="card-header">
-                <i class="fas fa-users mr-1"></i>
-                Drivers
-            </div>
-            <div class="card-body table-no-border">    
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="addDriversTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>Username</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% users.forEach(user => { %>
-                            <tr>
-                                <td>
-                                    <%= user.username %>
-                                    <form action="/vehicles/<%= vehicle._id %>/drivers/<%= user._id %>" method="POST">
-                                        <button class="table_button bg-success"><i class="fas fa-user-plus"></i></button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <% }); %> 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-xs btn-danger ml-1" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-<% if(vehicle.author.equals(current_user._id)){ %> 
-    <!-- Edit -->
-    <!-- Edit button - trigger modal -->
-    <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
-
+    <!-- Add driver -->
     <!-- Modal -->
-    <div id="editModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+    <div id="addDrverModal" class="modal fade" role="dialog">
+    <div class="modal-dialog w-75">
 
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Edit <strong><%= vehicle.brand %> <%= vehicle.model %> </strong> </h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form action="/vehicles/<%= vehicle._id %>?_method=PUT" method="post">
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="small mb-1">Brand</label>
-                                <input class="form-control py-4" type="text" name="vehicle[brand]" value="<%= vehicle.brand %>" required/>
-                            </div>
-                        </div>
-            
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="small mb-1">Model</label>
-                                <input class="form-control py-4" name="vehicle[model]" type="text" value="<%= vehicle.model %>" required/>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="form-group">
-                        <label class="small mb-1">Mileage</label>
-                        <input class="form-control py-4" name="vehicle[mileage]" type="number" value="<%= vehicle.mileage %>" required/>
-                    </div> -->
 
-                    <div class="form-group float-right">
-                        <button class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-danger ml-1" data-dismiss="modal">Close</button>
+        <div class="modal-body">
+            <p>Add driver to <strong><%= vehicle.brand %> <%= vehicle.model %></strong>:</p>
+            <div class="card mb-4 mt-4">
+                <div class="card-header">
+                    <i class="fas fa-users mr-1"></i>
+                    Drivers
+                </div>
+                <div class="card-body table-no-border">    
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="addDriversTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% users.forEach(user => { %>
+                                <tr>
+                                    <td>
+                                        <%= user.username %>
+                                        <form action="/vehicles/<%= vehicle._id %>/drivers/<%= user._id %>" method="POST">
+                                            <button class="table_button bg-success"><i class="fas fa-user-plus"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <% }); %> 
+                            </tbody>
+                        </table>
                     </div>
-                </form>
+                </div>
             </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-xs btn-danger ml-1" data-dismiss="modal">Close</button>
+        </div>
         </div>
 
     </div>
     </div>
-<% } %> 
 
-<!-- If the  user created the vehicle, he can delete it -->
-<% if(vehicle.author.equals(current_user._id)){ %> 
+    <!-- Edit -->
+    <!-- Edit button - trigger modal -->
+    <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
+    <!-- Modal -->
+    <div id="editModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit <strong><%= vehicle.brand %> <%= vehicle.model %> </strong> </h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="/vehicles/<%= vehicle._id %>?_method=PUT" method="post">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="small mb-1">Brand</label>
+                                    <input class="form-control py-4" type="text" name="vehicle[brand]" value="<%= vehicle.brand %>" required/>
+                                </div>
+                            </div>
+                
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="small mb-1">Model</label>
+                                    <input class="form-control py-4" name="vehicle[model]" type="text" value="<%= vehicle.model %>" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="small mb-1">Mileage</label>
+                            <input class="form-control py-4" name="vehicle[mileage]" type="number" value="<%= vehicle.mileage %>" required/>
+                        </div>
+
+                        <div class="form-group float-right">
+                            <button class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-danger ml-1" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Delete -->
     <!-- Delete button - trigger modal -->
     <button class="btn btn-xs btn-danger ml-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
-
     <!-- Modal -->
     <div id="deleteModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -306,7 +296,6 @@
 <% }else{ %> 
     <!-- Remove for me -->
     <button class="btn btn-xs btn-danger ml-1" data-toggle="modal" data-target="#removeModal">Remove</button>
-
     <!-- Modal -->
     <div id="removeModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
