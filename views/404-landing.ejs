@@ -10,15 +10,30 @@
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        #layoutError{
+            background-image: url('/assets/img/404.gif'); 
+            background-size: 90%;
+            background-repeat: no-repeat; 
+            background-position: bottom;
+            max-width: 75vh;
+            margin: auto;
+        }
+        #layoutError_content{
+            margin-top: calc(30vh - 19vw)
+        }
+    </style>
 </head>
 <body>
 
-    <div id="layoutError" style="background-image: url('/assets/img/404.gif'); background-size: 60%; background-repeat: no-repeat; background-position: top;">
+    <div id="layoutError">
         <div id="layoutError_content">
             <main>
-                <div class="row justify-content-center" style="margin-top: 40%;">
-                    <div class="col-lg-6 mt-1">
+                <div class="row justify-content-center">
+                    <div class=" mt-1">
                         <div class="text-center mt-5">
+                            <h1 class="text-secondary font-weight-bold display-4">Not Found</h1>
                             <a class="btn btn-secondary" href="/"><i class="fas fa-arrow-left mr-1"></i>Go Back</a>
                         </div>
                     </div>
