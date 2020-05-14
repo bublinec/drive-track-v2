@@ -19,17 +19,12 @@ const authRoutes = require("./routes/auth"),
 
 
 // DB:
-// mongoose.connect("mongodb://heroku_3r0400cl:7bfketltlgra774r6l9f26agdb@ds147450.mlab.com:47450/heroku_3r0400cl", {
-//     useNewUrlParser: true, 
-//     useUnifiedTopology: true,
-//     useCreateIndex: true
-// });
-
-mongoose.connect("mongodb://localhost/drive-track", {
+mongoose.connect("mongodb://heroku_3r0400cl:7bfketltlgra774r6l9f26agdb@ds147450.mlab.com:47450/heroku_3r0400cl", {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useCreateIndex: true
 });
+
 
 // App configuration
 const app = express();
