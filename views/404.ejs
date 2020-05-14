@@ -1,16 +1,12 @@
 <%- include("./partials/header") %> 
 
-<div id="layoutError">
+<div id="layoutError" style="background-image: url('/assets/img/404.gif'); background-size: 60%; background-repeat: no-repeat; background-position: top;">
     <div id="layoutError_content">
         <main>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6 mt-1">
-                        <div class="text-center mt-5">
-                            <img class="mb-4 img-error" src="/assets/img/error-404-monochrome.svg" />
-                            <p class="lead">There's a typo in the url, Buddy.</p>
-                            <a class="btn btn-primary" href="/dashboard/my_vehicles"><i class="fas fa-arrow-left mr-1"></i>Return to Dashboard</a>
-                        </div>
+            <div class="row justify-content-center" style="margin-top: 40%;">
+                <div class="col-lg-6 mt-1">
+                    <div class="text-center mt-5">
+                        <a class="btn btn-secondary" href="/dashboard/my_vehicles"><i class="fas fa-arrow-left mr-1"></i>Return to Dashboard</a>
                     </div>
                 </div>
             </div>
