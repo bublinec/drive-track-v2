@@ -1,32 +1,76 @@
-<%- include("./partials/header") %> 
-<style>
-    img{
-        width: 95%;
-        max-width: 60vh;
-        position: absolute;
-        bottom: 10vh;
-        left: 50%;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Everything you need to track driving." />
+    <meta name="author" content="Juraj Bublinec" />
+    <title>Drive Track</title>
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
+</head>
+<body>
+    <style>
+        body{
+            font-family: 'Ubuntu';
+        }
+        .browser img{
+            width: 60vh;
+            position: absolute;
+            bottom: 0;
+            /* center */
+            left: 50%;
+            margin-left: -16vw;
+        }
+        .browser h1{
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+            font-size: 4.8em;
 
-    }
+        }
+        .browser .content{
+            margin-top: 8vh;
+        }
 
-</style>
+        .smartphone img{
+            position: absolute;
+            bottom: 0;
+            /* center */
+            /* left: 50%; */
+            margin-left: 5vw;
+        }
+        .smartphone h1{
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+            font-size: 3.5em;
 
+        }
+        .smartphone .content{
+            margin-top: 15vh;
+        }
+    </style>
 
-<div id="layoutError">
-    <div id="layoutError_content">
-        <main>
-            <div class="row justify-content-center">
-                <div >
-                    <div class="text-center mt-5">
-                        <h1 class="text-secondary font-weight-bold display-4">Not Found</h1>
-                        <a class="btn btn-secondary mb-5" href="/"><i class="fas fa-arrow-left mr-1"></i>Go Back</a>
-                        <img class="mt-2" src="/assets/img/404.gif">
-                    </div>
-                </div>
-            </div>
-        </main>
+<!-- browser -->
+<div class="browser d-none d-md-block">
+    <div class="content">
+        <div class="text-center">
+            <h1 class="text-secondary font-weight-bold">Nothing Here</h1>
+            <a class="btn btn-secondary mt-5" href="/"><i class="fas fa-arrow-left mr-1"></i>Go Back</a>
+        </div>
+        <img class="mt-2" src="/assets/img/404.gif">
     </div>
 </div>
+
+<!-- smartphone -->
+<div class="smartphone d-block d-md-none">
+    <div class="content">
+        <div class="text-center">
+            <h1 class="text-secondary font-weight-bold">Nothing Here</h1>
+            <a class="btn btn-secondary mt-5" href="/"><i class="fas fa-arrow-left mr-1"></i>Go Back</a>
+        </div>
+        <img class="mt-2" src="/assets/img/404.gif">
+    </div>
 </div>
 
-<%- include("./partials/footer") %> 
+</body>
+</html>

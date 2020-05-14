@@ -30,12 +30,7 @@ router.get("/dashboard/my_driving", middleware.isLoggedIn, function(req, res){
 
 // not found - everything else (include as the last in the app!!)
 router.get("*", function(req, res){
-    if(req.user){
-        res.render("404");
-    }
-    else{
-        res.render("404-landing")
-    }
+    res.render("404");
 });
 
 
