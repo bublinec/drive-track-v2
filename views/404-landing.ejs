@@ -11,35 +11,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        #layoutError{
-            background-image: url('/assets/img/404.gif'); 
-            background-size: 90%;
-            background-repeat: no-repeat; 
-            background-position: bottom;
-            max-width: 75vh;
-            margin: auto;
-        }
-        #layoutError_content{
-            margin-top: calc(30vh - 19vw)
-        }
-    </style>
 </head>
 <body>
-
+    <style>
+        img{
+            width: 95%;
+            max-width: 60vh;
+            position: absolute;
+            bottom: 10vh;
+            /* left: 50%; */
+        }
+    
+    </style>
+    
+    
     <div id="layoutError">
         <div id="layoutError_content">
             <main>
                 <div class="row justify-content-center">
-                    <div class=" mt-1">
+                    <div >
                         <div class="text-center mt-5">
                             <h1 class="text-secondary font-weight-bold display-4">Not Found</h1>
-                            <a class="btn btn-secondary" href="/"><i class="fas fa-arrow-left mr-1"></i>Go Back</a>
+                            <a class="btn btn-secondary mb-5" href="/"><i class="fas fa-arrow-left mr-1"></i>Go Back</a>
+                            <img class="mt-2" src="/assets/img/404.gif">
                         </div>
                     </div>
                 </div>
             </main>
         </div>
+    </div>
     </div>
 
 </body>
