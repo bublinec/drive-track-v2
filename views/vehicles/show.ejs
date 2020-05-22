@@ -281,13 +281,17 @@
         <div class="modal-content">
 
         <div class="modal-body">
-            <p>Do you really want to delte <strong><%= vehicle.brand %> <%= vehicle.model %></strong>?</p>
+            <p>Type <strong><%= vehicle.brand %> <%= vehicle.model %></strong> to delete the vehicle:</p>
         </div>
         <div class="modal-footer">
-            <form class="inline" action="/vehicles/<%= vehicle._id %>?_method=DELETE" method="post">
-                <button class="btn btn-xs btn-danger">Yes</button>
+            <form class="col-12" action="/vehicles/<%= vehicle._id %>?_method=DELETE" method="post">
+                <div class="form-group col-12">
+                    <input class="form-control py-4" name="security_input" type="text" placeholder="<%= vehicle.brand %> <%= vehicle.model %>" required/>
+                </div>
+                <button class="btn btn-xs btn-danger ml-2">Delete</button>
+                <button type="button" class="btn btn-xs btn-primary ml-1" data-dismiss="modal">Back</button>
             </form>
-            <button type="button" class="btn btn-xs btn-primary ml-1" data-dismiss="modal">No</button>
+
         </div>
         </div>
 
