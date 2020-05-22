@@ -106,7 +106,7 @@ router.delete("/:id", middleware.isLoggedIn, middleware.isAuthor,  function(req,
                 });
             });
             found_vehicle.drivers.forEach(function(driver){
-                User.findById(driver_id, function(err, found_user){
+                User.findById(driver._id, function(err, found_user){
                     if(err){f
                         req.flash("error", err.message);
                         res.redirect("back");
@@ -121,7 +121,7 @@ router.delete("/:id", middleware.isLoggedIn, middleware.isAuthor,  function(req,
             found_vehicle.remove();
             // redirect to index with a succes flash message
             req.flash("success", "Vehicle deleted!");
-            res.redirect("/");
+            res.redirect("/dashboard/my_vehicles");
         }
     });
 });

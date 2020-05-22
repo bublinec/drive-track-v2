@@ -45,12 +45,12 @@
                     </script>
                 </div>
                 
-                <div class="col-md-2">
+                <div class="col-sm-6 col-md-2">
                     <label for="ride[from]">From</label>
                     <input class="form-control py-2" type="text" name="ride[from]" value="Zvolen" required/>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-sm-6 col-md-2">
                     <label for="ride[to]">To</label>
                     <input class="form-control py-2" type="text" name="ride[to]" required/>
                 </div>
@@ -126,9 +126,9 @@
                                 <% } %> 
                                 <td class="d-none d-sm-block">
                                     <% if(ride.round_trip){ %>
-                                        <i class="fas fa-check"></i>
+                                        <i class="fas fa-exchange-alt"></i>
                                     <% }else{ %>
-                                        <i class="fas fa-times"></i> 
+                                        <i class="fas fa-long-arrow-alt-right"></i> 
                                     <% } %>
                                     <form action="/vehicles/<%= vehicle._id %>/rides/<%= ride._id %>?_method=DELETE" method="post">
                                         <button class="table_button bg-danger"><i class="fas fa-trash-alt"></i></button>
