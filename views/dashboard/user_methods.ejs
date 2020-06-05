@@ -20,15 +20,18 @@ Date.prototype.isSameMonthAs = function(pDate) {
 // return two arrays: keys and values sorted by values
 // Object.prototype.sort definition seems to cause problems!
 function sortObject(object){
-  var keys = Object.keys(object);
+  var keys = Object.keys(object);  
   var values = Object.values(object);
   var sorted_keys = [];
   var sorted_values = [];
-  for(var i=0;i < keys.length; i++){
-    var max_i = values.indexOf(Math.max(...values))
-    sorted_keys.push(keys[max_i])
+  var len = keys.length;
+
+  for(var i=0;i < len; i++){
+    var max_i = values.indexOf(Math.max(...values));
+    sorted_keys.push(keys[max_i]);
     sorted_values.push(values[max_i]);
     values.splice(max_i, 1);
+    keys.splice(max_i, 1);
   }
   return [sorted_keys, sorted_values];
 }
