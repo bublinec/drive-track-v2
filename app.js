@@ -25,6 +25,7 @@ mongoose.connect("mongodb://heroku_3r0400cl:7bfketltlgra774r6l9f26agdb@ds147450.
     useCreateIndex: true
 });
 
+
 // App configuration
 const app = express();
 app.set("view engine", "ejs");
