@@ -114,7 +114,7 @@
                                 <td data-sort="<%= sort_date %>">
                                     <span class="d-none d-sm-inline">
                                         <%= ride.date.getHours()%>:
-                                        <%= ride.date.getMinutes()%>, 
+                                        <%= "0" + ride.date.getMinutes().toString()).slice(-2)%>, 
                                     </span>
 
                                     <%= ride.date.getDate() %>.
