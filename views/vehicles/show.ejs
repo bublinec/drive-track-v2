@@ -112,10 +112,16 @@
                                 <% sort_date += ("0" + ride.date.getMinutes().toString()).slice(-2) %> 
 
                                 <td data-sort="<%= sort_date %>">
+                                    <span class="d-none d-sm-inline">
+                                        <%= ride.date.getHours()%>:
+                                        <%= ride.date.getMinutes()%>, 
+                                    </span>
+
                                     <%= ride.date.getDate() %>.
                                     <%= ride.date.getMonth() + 1%>.  
+
                                     <!-- new Intl.DateTimeFormat('eu', { month: "long"}).format(new Date(ride.date)) -->
-                                    <span class="d-none d-sm-inline"><%= ride.date.getFullYear() %></span>
+                                    <span class="d-none d-sm-inline"> <%= ride.date.getFullYear() %></span>
                                 </td>
 
                                 <td class="d-none d-sm-block"><%= ride.from%> </td>
