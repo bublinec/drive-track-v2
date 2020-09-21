@@ -11,10 +11,8 @@ Online driving log book
 
 ### TO DO:
 
-- make app secure
-- convert it to a PWA
 - user settings - change password, username etc.
 - forgot password handling
-- automatic tracking using phone GPS location
-- use APIs for getting locations, showing maps, calculating distances etc.
+- automatic tracking using phone GPS location (lot of work :D )
+- use APIs for getting locations, showing maps, calculating distances etc. (lot of work :D )
 - creating better connections between users
