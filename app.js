@@ -19,12 +19,18 @@ const authRoutes = require("./routes/auth"),
 
 
 // DB:
-mongoose.connect("mongodb://heroku_3r0400cl:7bfketltlgra774r6l9f26agdb@ds147450.mlab.com:47450/heroku_3r0400cl", {
+const uri = "mongodb+srv://heroku_3r0400cl:y2vVL2MxUE4EfMOy@cluster-3r0400cl.7orhu.mongodb.net/heroku_3r0400cl?retryWrites=true&w=majority";
+mongoose.connect(uri, {
     useNewUrlParser: true, 
     useUnifiedTopology: true,
     useCreateIndex: true
-});
+})
 
+mongoose.connection.on("connected", () => {
+    console.log("Mongoose connected!")
+})
+
+// y2vVL2MxUE4EfMOy
 
 // App configuration
 const app = express();
